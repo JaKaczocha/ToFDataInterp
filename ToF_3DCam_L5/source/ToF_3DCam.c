@@ -42,7 +42,7 @@
 
 #include "vl53l5cx_api.h"
 #include "platform.h"
-
+#include "interpolation.h"
 
 int status;
 volatile int IntCount;
