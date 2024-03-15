@@ -1,0 +1,7 @@
+../source/platform.c:67:9:RdByte	24	static
+../source/platform.c:90:9:WrByte	16	static
+../source/platform.c:108:9:WrMulti	32	static
+../source/platform.c:130:9:RdMulti	32	static
+../source/platform.c:174:6:SwapBuffer	24	static
+../source/platform.c:193:9:WaitMs	8	static
+../source/platform.c:154:9:Reset_Sensor	8	static
