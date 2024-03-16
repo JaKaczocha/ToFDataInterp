@@ -1,0 +1,6 @@
+C:\Users\dawid\Documents\MCUXpressoIDE_11.8.1_1197\workspace\PSM2_ToF\drivers/fsl_gpio.h:153:20:GPIO_PinWrite	24	static
+../source/PSM2_ToF.c:44:6:delay_ms	24	static
+../source/PSM2_ToF.c:49:5:convertToGrayScale	16	static
+../source/PSM2_ToF.c:55:6:cbToF_Ready	24	static
+../source/PSM2_ToF.c:76:15:drawPixels	56	static
+../source/PSM2_ToF.c:107:5:main	8	static
