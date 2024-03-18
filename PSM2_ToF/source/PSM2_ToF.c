@@ -21,6 +21,8 @@
 #include "vl53l5cx_api.h"
 #include "platform.h"
 
+#include "colorConverter.h"
+#include "interpolation.h"
 
 int status;
 
@@ -87,12 +89,7 @@ volatile void drawPixels(uint16_t width, uint16_t height, uint8_t x, uint8_t y)
 
 	for(int j = 0; j < width;j++) {
 			for(int i = 0; i < height;i++) {
-
-
-
 				//PRINTF("%4d ", Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)]);
-
-
 				PRINTF("%4d ", greyPixelArr[j][i]);
 			}
 			PRINTF("\r\n");

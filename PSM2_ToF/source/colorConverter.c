@@ -1,25 +1,8 @@
+#include "colorConverter.h"
 #include <stdio.h>
 #include <math.h>
-#include <stdint.h>
 
-int counter = 1;
-int old_min = 1;
-int old_max = 4000;
-int new_min  = 0;
-int new_max = 255;
 
-uint16_t simulateToF(uint16_t matrix[8][8]) {
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            matrix[i][j] = counter;
-            counter++;
-            if (counter > 4000) {
-                counter = 1;
-            }
-        }
-    }
-    return 0;
-}
 
 uint16_t convertToGreyscale(uint16_t value) {
     uint16_t r, g, b;
@@ -53,31 +36,4 @@ uint16_t convertToColor(uint16_t value) {
     return (uint16_t)((r << 11) | (g << 5) | b);
 }
 
-int main() {
-    for(int i = 0; i < 64; i++) {
 
-    
-    
-    //while(1) {
-        uint16_t pixelMatrix[8][8] = {0};
-        uint16_t greyscaleMatrix[8][8] = {0};
-        uint16_t colorMatrix[8][8] = {0};
-
-        simulateToF(pixelMatrix);
-        //convertToGreyscale(pixelMatrix);
-        for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 8; j++) {
-                greyscaleMatrix[i][j] = convertToGreyscale(pixelMatrix[i][j]);
-                printf("%d ", greyscaleMatrix[i][j]);
-                //colorMatrix[i][j] = convertToColor(pixelMatrix[i][j]);
-                //printf("%d ", colorMatrix[i][j]);
-            }
-            printf("\n");
-        }
-        printf("\n");
-    }
-
-    //}
-    
-    return 0;
-}
