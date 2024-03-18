@@ -26,8 +26,10 @@
 
 int status;
 
-int pixelArr[8][8];
-int greyPixelArr[8][8];
+//int pixelArr[8][8];
+//int greyPixelArr[8][8];
+int pixelArr[64];
+int greyPixelArr[64];
 
 volatile int IntCount;
 uint8_t p_data_ready;
@@ -48,12 +50,6 @@ void delay_ms(uint32_t delay)
 	for(volatile int j=delay*100000; j > 0;j--);
 }
 
-int convertToGrayScale(int pixel)
-{
-	pixel = ((pixel - old_min)/ (old_max - old_min)) * (new_max - new_min) + new_min;
-	return pixel;
-}
-
 void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 
 	status = vl53l5cx_get_resolution(&Dev, &resolution);
@@ -61,17 +57,12 @@ void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 
 	for(int j = 0; j < resolution/8;j++) {
 		for(int i = 0; i < resolution/8;i++) {
-
-
-			pixelArr[j][i] = Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)];
+			pixelArr[j*8+i] = Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)];
 			//PRINTF("%4d ", Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)]);
-
-
 			//PRINTF("%4d ", pixelArr[j][i]);
 		}
 		//PRINTF("\r\n");
 	}
-
 	//PRINTF("--------------------------------------\r\n");
 }
 
@@ -82,15 +73,14 @@ volatile void drawPixels(uint16_t width, uint16_t height, uint8_t x, uint8_t y)
 	{
 		for(int j=0; j<height; j++)
 		{
-			greyPixelArr[j][i] = convertToGrayScale(pixelArr[j][i]);
-			LCD_Draw_FillRect(x*i, y*j, x*(i+1), y*(j+1), greyPixelArr[j][i]);
+			LCD_Draw_FillRect(x*i, y*j, x*(i+1), y*(j+1), greyPixelArr[j*8+i]);
 		}
 	}
 
 	for(int j = 0; j < width;j++) {
 			for(int i = 0; i < height;i++) {
 				//PRINTF("%4d ", Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)]);
-				PRINTF("%4d ", greyPixelArr[j][i]);
+				PRINTF("%4d ", greyPixelArr[j*8+i]);
 			}
 			PRINTF("\r\n");
 		}
