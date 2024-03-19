@@ -29,34 +29,30 @@ int nearestNeighbor(uint16_t dest[], const uint16_t destWidth, const uint16_t de
 
 
 
-uint16_t calcBilinear(uint16_t p00, uint16_t p01, uint16_t p10, uint16_t p11,double y_ratio, double x_ratio) {
 
 
-}
+void bilinear(uint16_t dest[], uint16_t destWidth, uint16_t destHeight, const uint16_t src[], uint16_t srcWidth, uint16_t srcHeight) {
+    float x_ratio = ((float)(srcWidth - 1)) / destWidth;
+    float y_ratio = ((float)(srcHeight - 1)) / destHeight;
+    float x_diff, y_diff;
+    int offset = 0;
 
-void bilinear(uint16_t dest[],uint16_t destWidth,uint16_t destHeight, const uint16_t src[],uint16_t srcWidth,uint16_t srcHeight) {
+    for (int y = 0; y < destHeight; y++) {
+        for (int x = 0; x < destWidth; x++) {
+            int x_src = (int)(x_ratio * x);
+            int y_src = (int)(y_ratio * y);
+            x_diff = (x_ratio * x) - x_src;
+            y_diff = (y_ratio * y) - y_src;
+            int index = y_src * srcWidth + x_src;
+            uint16_t a = src[index];
+            uint16_t b = src[index + 1];
+            uint16_t c = src[index + srcWidth];
+            uint16_t d = src[index + srcWidth + 1];
 
-    uint16_t p00=0,p01 = 0,p10 = 0,p11 = 0;
-    float gx = 0.0, gy = 0.0;
-    int xIndex, yIndex;
-    float xRatio, yRatio;
-    for(int y = 0; y < destHeight; y++) {
-        for(int x = 0; x < destWidth; x++) {
-            gx = (x*(srcWidth - 1.0)) / (destWidth - 1.0);
-            gy = (y*(srcHeight - 1.0)) / (destHeight - 1.0);
+            // Interpolacja biliniowa
+            uint16_t interpolated_value = (uint16_t)(a * (1 - x_diff) * (1 - y_diff) + b * x_diff * (1 - y_diff) + c * y_diff * (1 - x_diff) + d * x_diff * y_diff);
 
-            xIndex = (int)gx;
-            yIndex = (int)gy;
-
-            xRatio = gx - xIndex;
-            yRatio = gy - yIndex;
-
-            p00 = src[yIndex*srcWidth + xIndex];
-            p01 = src[yIndex*srcWidth + xIndex + 1];
-            p10 = src[(yIndex + 1)*srcWidth + xIndex];
-            p11 = src[(yIndex + 1)*srcWidth + xIndex + 1];
-
-            dest[y * destWidth + x] = calcBilinear(p00,p01,p10,p11,yRatio,xRatio);
+            dest[offset++] = interpolated_value;
         }
     }
 }

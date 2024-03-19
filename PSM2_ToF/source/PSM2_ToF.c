@@ -28,8 +28,9 @@ int status;
 
 //int pixelArr[8][8];
 //int greyPixelArr[8][8];
-int pixelArr[64];
-int greyPixelArr[64];
+uint16_t pixelArr[64];
+uint16_t greyPixelArr[64];
+uint16_t  interpArr[32*32];
 
 volatile int IntCount;
 uint8_t p_data_ready;
@@ -69,6 +70,7 @@ void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 volatile void drawPixels(uint16_t width, uint16_t height, uint8_t x, uint8_t y)
 {
 
+	/*
 	for(int j=0; j<width; j++)
 	{
 		for(int i=0; i<height; i++)
@@ -84,11 +86,35 @@ volatile void drawPixels(uint16_t width, uint16_t height, uint8_t x, uint8_t y)
 			for(int i = 0; i < height;i++) {
 				//PRINTF("%4d ", Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)]);
 
-				PRINTF("%4d ", greyPixelArr[j*8+i]);
+				PRINTF("%4d ", interpArr[j*8+i]);
 			}
 			PRINTF("\r\n");
 		}
 	PRINTF("--------------------------------------\r\n");
+
+	*/
+	bilinear(interpArr, 32, 32, pixelArr, 8, 8);
+
+	for(int j=0; j<width; j++)
+		{
+			for(int i=0; i<height; i++)
+			{
+				interpArr[j*width+i] = convertToColor(interpArr[j*width+i],4000);
+
+				//LCD_Draw_FillRect(i,j,i*4 - 1,j*4-1,interpArr[j*width+i]);
+				LCD_Draw_Point(i, j, interpArr[j*width+i]);
+			}
+		}
+
+	for(int i = 0; i < 128; i++) {
+		for(int j = 0; j < 128; j++) {
+			LCD_Draw_Point(i, j, interpArr[(j/4*width+i/4)]);
+		}
+	}
+
+	//LCD_Set_Bitmap(interpArr);
+
+
 
 }
 
@@ -122,6 +148,7 @@ int main(void) {
 
 	LCD_Init(FLEXCOMM3_PERIPHERAL);
 	LCD_Puts(10, 30, "Before vl53l5cx_is_alive...", 0x0000);
+	PRINTF("Before vl53l5cx_is_alive...");
 	LCD_GramRefresh();
 
 
@@ -132,6 +159,7 @@ int main(void) {
 
 		LCD_Clear(0xffffff);
 		LCD_Puts(10, 30, "NOT ALIVE...", 0x0000);
+
 
 
 		PRINTF("VL53L5CXV0 not detected at requested address (0x%x)\r\n", Dev.platform.address);
@@ -146,6 +174,7 @@ int main(void) {
 
 	LCD_Clear(0xffffff);
 	LCD_Puts(10, 30, "Connecting to vl5315cx...", 0x0000);
+	PRINTF("Connecting to vl5315cx...");
 	LCD_GramRefresh();
 
 
@@ -167,7 +196,7 @@ int main(void) {
 		//LCD_Clear(0x0000);
 
 
-		drawPixels(8, 8, 20, 16);
+		drawPixels(32, 32, 1, 1);
 
 		LCD_GramRefresh();
 
