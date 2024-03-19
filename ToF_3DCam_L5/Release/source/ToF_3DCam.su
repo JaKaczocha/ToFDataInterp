@@ -1,3 +1,0 @@
-../source/ToF_3DCam.c:57:6:delay_ms	8	static
-../source/ToF_3DCam.c:62:6:cbToF_Ready	32	static
-../source/ToF_3DCam.c:81:5:main	24	static

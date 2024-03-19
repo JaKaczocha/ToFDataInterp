@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="LPC55S69" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_14 http://mcuxpresso.nxp.com/XSD/mex_configuration_14.xsd" uuid="cd4d50d4-c58e-40eb-bf68-cf0085583f13" version="14" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="LPC55S69" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_15 http://mcuxpresso.nxp.com/XSD/mex_configuration_15.xsd" uuid="cd4d50d4-c58e-40eb-bf68-cf0085583f13" version="15" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>LPC55S69</processor>
       <package>LPC55S69JBD100</package>
@@ -19,13 +19,13 @@
       <generate_registers_defines>false</generate_registers_defines>
    </preferences>
    <tools>
-      <pins name="Pins" version="14.0" enabled="true" update_project_code="true">
+      <pins name="Pins" version="15.0" enabled="true" update_project_code="true">
          <generated_project_files>
             <file path="board/pin_mux.c" update_enabled="true"/>
             <file path="board/pin_mux.h" update_enabled="true"/>
          </generated_project_files>
          <pins_profile>
-            <processor_version>14.0.0</processor_version>
+            <processor_version>15.0.1</processor_version>
             <pin_labels>
                <pin_label pin_num="81" pin_signal="PIO0_2/FC3_TXD_SCL_MISO_WS/CT_INP1/SCT0_OUT0/SCT_GPI2/SECURE_GPIO0_2" label="U6[11]/P20[5]/FC3_SPI_MISO" identifier="LCD_DC"/>
                <pin_label pin_num="31" pin_signal="PIO1_5/FC0_RXD_SDA_MOSI_DATA/SD0_D2/CTIMER2_MAT0/SCT_GPI0" label="P17[17]/P24[1]/PIO1_5_GPIO_ARD" identifier="TIRQ;kPINT_PinInt0"/>
@@ -43,7 +43,7 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM0" description="Peripheral FLEXCOMM0 is not initialized" problem_level="1" source="Pins:BOARD_InitDEBUG_UARTPins">
+                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM0" description="Peripheral FLEXCOMM0 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitDEBUG_UARTPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -86,7 +86,7 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="SWD" description="Peripheral SWD is not initialized" problem_level="1" source="Pins:BOARD_InitSWD_DEBUGPins">
+                  <dependency resourceType="Peripheral" resourceId="SWD" description="Peripheral SWD signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitSWD_DEBUGPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -141,12 +141,12 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="USBFSH" description="Peripheral USBFSH is not initialized" problem_level="1" source="Pins:BOARD_InitUSBPins">
+                  <dependency resourceType="Peripheral" resourceId="USBFSH" description="Peripheral USBFSH signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitUSBPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="Peripheral" resourceId="USBHSH" description="Peripheral USBHSH is not initialized" problem_level="1" source="Pins:BOARD_InitUSBPins">
+                  <dependency resourceType="Peripheral" resourceId="USBHSH" description="Peripheral USBHSH signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitUSBPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -275,7 +275,7 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="SYSCON" description="Peripheral SYSCON is not initialized" problem_level="1" source="Pins:BOARD_InitBUTTONsPins">
+                  <dependency resourceType="Peripheral" resourceId="SYSCON" description="Peripheral SYSCON signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitBUTTONsPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -336,22 +336,22 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM4" description="Peripheral FLEXCOMM4 is not initialized" problem_level="1" source="Pins:BOARD_InitI2SPins">
+                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM4" description="Peripheral FLEXCOMM4 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitI2SPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="Peripheral" resourceId="SYSCON" description="Peripheral SYSCON is not initialized" problem_level="1" source="Pins:BOARD_InitI2SPins">
+                  <dependency resourceType="Peripheral" resourceId="SYSCON" description="Peripheral SYSCON signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitI2SPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM7" description="Peripheral FLEXCOMM7 is not initialized" problem_level="1" source="Pins:BOARD_InitI2SPins">
+                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM7" description="Peripheral FLEXCOMM7 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitI2SPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM6" description="Peripheral FLEXCOMM6 is not initialized" problem_level="1" source="Pins:BOARD_InitI2SPins">
+                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM6" description="Peripheral FLEXCOMM6 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitI2SPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -452,7 +452,7 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM4" description="Peripheral FLEXCOMM4 is not initialized" problem_level="1" source="Pins:BOARD_InitACCELPins">
+                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM4" description="Peripheral FLEXCOMM4 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitACCELPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -510,12 +510,12 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM4" description="Peripheral FLEXCOMM4 is not initialized" problem_level="1" source="Pins:BOARD_ToFCamPins">
+                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM4" description="Peripheral FLEXCOMM4 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_ToFCamPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="Peripheral" resourceId="PINT" description="Peripheral PINT is not initialized" problem_level="1" source="Pins:BOARD_ToFCamPins">
+                  <dependency resourceType="Peripheral" resourceId="PINT" description="Peripheral PINT signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_ToFCamPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -567,7 +567,7 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM3" description="Peripheral FLEXCOMM3 is not initialized" problem_level="1" source="Pins:BOARD_InitPMODPins">
+                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM3" description="Peripheral FLEXCOMM3 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPMODPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -603,13 +603,13 @@
             </function>
          </functions_list>
       </pins>
-      <clocks name="Clocks" version="12.0" enabled="true" update_project_code="true">
+      <clocks name="Clocks" version="13.0" enabled="true" update_project_code="true">
          <generated_project_files>
             <file path="board/clock_config.c" update_enabled="true"/>
             <file path="board/clock_config.h" update_enabled="true"/>
          </generated_project_files>
          <clocks_profile>
-            <processor_version>14.0.0</processor_version>
+            <processor_version>15.0.1</processor_version>
          </clocks_profile>
          <clock_configurations>
             <clock_configuration name="BOARD_BootClockFRO12M" id_prefix="" prefix_user_defined="false">
@@ -941,7 +941,7 @@
          </dcdx_profile>
          <dcdx_configurations/>
       </dcdx>
-      <periphs name="Peripherals" version="13.0" enabled="true" update_project_code="true">
+      <periphs name="Peripherals" version="14.0" enabled="true" update_project_code="true">
          <dependencies>
             <dependency resourceType="SWComponent" resourceId="platform.drivers.flexcomm_i2c" description="FLEXCOMM I2C Driver is not found in the toolchain/IDE project. The project will not compile!" problem_level="2" source="Peripherals">
                <feature name="enabled" evaluation="equal">
@@ -989,7 +989,7 @@
             <file path="board/peripherals.h" update_enabled="true"/>
          </generated_project_files>
          <peripherals_profile>
-            <processor_version>14.0.0</processor_version>
+            <processor_version>15.0.1</processor_version>
          </peripherals_profile>
          <functional_groups>
             <functional_group name="BOARD_InitPeripherals_cm33_core0" uuid="61d0725d-b300-49cb-9c66-b5edfbf8ffc1" called_from_default_init="true" id_prefix="" core="cm33_core0">
@@ -1129,6 +1129,7 @@
                <config_set_global name="global_system_definitions">
                   <setting name="user_definitions" value=""/>
                   <setting name="user_includes" value=""/>
+                  <setting name="global_init" value=""/>
                </config_set_global>
             </component>
             <component name="uart_cmsis_common" uuid="40c57b6c-a416-4533-b4ac-a33e9c0756ee" type_id="uart_cmsis_common_9cb8e302497aa696fdbb5a4fd622c2a8">

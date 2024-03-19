@@ -26,8 +26,10 @@
 
 int status;
 
-int pixelArr[8][8];
-int greyPixelArr[8][8];
+//int pixelArr[8][8];
+//int greyPixelArr[8][8];
+int pixelArr[64];
+int greyPixelArr[64];
 
 volatile int IntCount;
 uint8_t p_data_ready;
@@ -48,12 +50,6 @@ void delay_ms(uint32_t delay)
 	for(volatile int j=delay*100000; j > 0;j--);
 }
 
-int convertToGrayScale(int pixel)
-{
-	pixel = ((pixel - old_min)/ (old_max - old_min)) * (new_max - new_min) + new_min;
-	return pixel;
-}
-
 void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 
 	status = vl53l5cx_get_resolution(&Dev, &resolution);
@@ -61,36 +57,32 @@ void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 
 	for(int j = 0; j < resolution/8;j++) {
 		for(int i = 0; i < resolution/8;i++) {
-
-
-			pixelArr[j][i] = Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)];
+			pixelArr[j*8+i] = Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)];
 			//PRINTF("%4d ", Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)]);
-
-
 			//PRINTF("%4d ", pixelArr[j][i]);
 		}
 		//PRINTF("\r\n");
 	}
-
 	//PRINTF("--------------------------------------\r\n");
 }
 
 volatile void drawPixels(uint16_t width, uint16_t height, uint8_t x, uint8_t y)
 {
 
-	for(int i=0; i<width; i++)
+	for(int j=0; j<width; j++)
 	{
-		for(int j=0; j<height; j++)
+		for(int i=0; i<height; i++)
 		{
-			greyPixelArr[j][i] = convertToGrayScale(pixelArr[j][i]);
-			LCD_Draw_FillRect(x*i, y*j, x*(i+1), y*(j+1), greyPixelArr[j][i]);
+			greyPixelArr[j*8+i] = convertToColor(pixelArr[j*8+i],1000);
+			LCD_Draw_FillRect(x*i, y*j, x*(i+1), y*(j+1), greyPixelArr[j*8+i]);
 		}
 	}
 
 	for(int j = 0; j < width;j++) {
 			for(int i = 0; i < height;i++) {
 				//PRINTF("%4d ", Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)]);
-				PRINTF("%4d ", greyPixelArr[j][i]);
+
+				PRINTF("%4d ", greyPixelArr[j*8+i]);
 			}
 			PRINTF("\r\n");
 		}
@@ -126,17 +118,33 @@ int main(void) {
 	GPIO_PinWrite(BOARD_TOFCAMPINS_TLPn_GPIO, BOARD_TOFCAMPINS_TLPn_PORT, BOARD_TOFCAMPINS_TLPn_PIN, 1);
 	delay_ms(20);
 
+	LCD_Init(FLEXCOMM3_PERIPHERAL);
+	LCD_Puts(10, 30, "Before vl53l5cx_is_alive...", 0x0000);
+	LCD_GramRefresh();
+
+
 	status = vl53l5cx_is_alive(&Dev, &isAlive);
 
 
 	if(!isAlive && status==0) {
 
+		LCD_Clear(0xffffff);
+		LCD_Puts(10, 30, "NOT ALIVE...", 0x0000);
+
+
 		PRINTF("VL53L5CXV0 not detected at requested address (0x%x)\r\n", Dev.platform.address);
 		return 1;
 	} else {
 
+
 		PRINTF("VL53L5CXV0 is Alive at address (0x%x)\r\n", Dev.platform.address);
 	}
+
+
+
+	LCD_Clear(0xffffff);
+	LCD_Puts(10, 30, "Connecting to vl5315cx...", 0x0000);
+	LCD_GramRefresh();
 
 
 	//PRINTF("Sensor initializing, please wait few seconds...\r\n");
@@ -151,10 +159,10 @@ int main(void) {
 	/* USER CODE END 2 */
 	PINT_EnableCallbackByIndex(PINT_PERIPHERAL, kPINT_PinInt0);
 
-	LCD_Init(FLEXCOMM3_PERIPHERAL);
+
 
 	while(1) {
-		LCD_Clear(0x0000);
+		//LCD_Clear(0x0000);
 
 
 		drawPixels(8, 8, 20, 16);

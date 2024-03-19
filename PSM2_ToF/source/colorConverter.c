@@ -4,19 +4,34 @@
 
 
 
-uint16_t convertToGreyscale(uint16_t value) {
+uint16_t convertToGreyscale(const uint16_t value,const float maxValue) {
     uint16_t r, g, b;
 
     // Scale the grayscale value to 0-31
-    uint16_t scaledValue = round((value / 4000.0) * 31);
+    uint16_t scaledValue = (int)((value / maxValue) * 31 + 0.5);
 
     // Map the grayscale value to RGB. The closer to 4000, the closer to white (31, 31, 31).
     r = g = b = scaledValue;
+    g = (g << 1) + 1;
 
     // Combine the red, green and blue values into a uint16_t color value
     return (uint16_t)((r << 11) | (g << 5) | b);
 }
 
+uint16_t convertToColor(const uint16_t value,const float maxValue) {
+    uint16_t r, g, b;
+
+    // Map to red. The closer to 2000, the less intense the red.
+    r = 31 - (int)((value / maxValue) * 31);
+    g = 0;
+    b = (int)((value / maxValue) * 31);
+
+
+    // Combine the red, green and blue values into a uint16_t color value
+    return (uint16_t)((r << 11) | (g << 5) | b);
+}
+
+/*
 uint16_t convertToColor(uint16_t value) {
     uint16_t r, g, b;
 
@@ -35,5 +50,4 @@ uint16_t convertToColor(uint16_t value) {
     // Combine the red, green and blue values into a uint16_t color value
     return (uint16_t)((r << 11) | (g << 5) | b);
 }
-
-
+*/

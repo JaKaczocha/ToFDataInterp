@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-uint16_t convertToGreyscale(uint16_t value);
-uint16_t convertToColor(uint16_t value);
+uint16_t convertToGreyscale(const uint16_t value,const float maxValue);
+uint16_t convertToColor(const uint16_t value,const float maxValue);
 
 #endif /* COLORCONVERTER_H_ */
