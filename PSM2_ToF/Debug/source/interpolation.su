@@ -1,3 +1,8 @@
 ../source/interpolation.c:9:5:nearestNeighbor	48	static
+<<<<<<< HEAD
 ../source/interpolation.c:32:10:calcBilinear	32	static
 ../source/interpolation.c:37:6:bilinear	88	static
+=======
+../source/interpolation.c:32:10:calcBilinear	64	static
+../source/interpolation.c:58:6:bilinear	88	static
+>>>>>>> 2c2b0e8807066fafdaee12d8d3655715fc19afaa
