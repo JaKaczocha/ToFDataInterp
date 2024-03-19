@@ -73,10 +73,9 @@ volatile void drawPixels(uint16_t width, uint16_t height, uint8_t x, uint8_t y)
 	{
 		for(int i=0; i<height; i++)
 		{
-<<<<<<< HEAD
+
 			greyPixelArr[j*8+i] = convertToColor(pixelArr[j*8+i],1000);
-=======
->>>>>>> 2c2b0e8807066fafdaee12d8d3655715fc19afaa
+
 			LCD_Draw_FillRect(x*i, y*j, x*(i+1), y*(j+1), greyPixelArr[j*8+i]);
 		}
 	}
@@ -84,10 +83,7 @@ volatile void drawPixels(uint16_t width, uint16_t height, uint8_t x, uint8_t y)
 	for(int j = 0; j < width;j++) {
 			for(int i = 0; i < height;i++) {
 				//PRINTF("%4d ", Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)]);
-<<<<<<< HEAD
 
-=======
->>>>>>> 2c2b0e8807066fafdaee12d8d3655715fc19afaa
 				PRINTF("%4d ", greyPixelArr[j*8+i]);
 			}
 			PRINTF("\r\n");

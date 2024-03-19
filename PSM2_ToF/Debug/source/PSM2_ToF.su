@@ -1,9 +1,5 @@
-C:\Users\User\Desktop\toff\ToF_3D\PSM2_ToF\drivers/fsl_gpio.h:153:20:GPIO_PinWrite	24	static
+C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\drivers/fsl_gpio.h:153:20:GPIO_PinWrite	24	static
 ../source/PSM2_ToF.c:48:6:delay_ms	24	static
 ../source/PSM2_ToF.c:53:6:cbToF_Ready	24	static
 ../source/PSM2_ToF.c:69:15:drawPixels	48	static
-<<<<<<< HEAD
-../source/PSM2_ToF.c:96:5:main	8	static
-=======
-../source/PSM2_ToF.c:94:5:main	8	static
->>>>>>> 2c2b0e8807066fafdaee12d8d3655715fc19afaa
+../source/PSM2_ToF.c:98:5:main	8	static
