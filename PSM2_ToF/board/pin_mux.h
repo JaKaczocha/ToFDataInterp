@@ -533,6 +533,73 @@ void BOARD_ToFCamPins(void); /* Function assigned for the Cortex-M33 (Core #0) *
  */
 void BOARD_InitPMODPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO0_15_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO0_15_FUNC_ALT0 0x00u
+/*!
+ * @brief Selects function mode (on-chip pull-up/pull-down resistor control).: Pull-up. Pull-up resistor enabled. */
+#define PIO0_15_MODE_PULL_UP 0x02u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_10_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO1_10_FUNC_ALT0 0x00u
+/*!
+ * @brief Selects function mode (on-chip pull-up/pull-down resistor control).: Pull-up. Pull-up resistor enabled. */
+#define PIO1_10_MODE_PULL_UP 0x02u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_9_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO1_9_FUNC_ALT0 0x00u
+/*!
+ * @brief Selects function mode (on-chip pull-up/pull-down resistor control).: Pull-up. Pull-up resistor enabled. */
+#define PIO1_9_MODE_PULL_UP 0x02u
+
+/*! @name PIO1_9 (number 10), S3/P18[1]/PIO1_9_GPIO_ARD
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITENCPINS_SIA_GPIO GPIO                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITENCPINS_SIA_GPIO_PIN_MASK (1U << 9U) /*!<@brief GPIO pin mask */
+#define BOARD_INITENCPINS_SIA_PORT 1U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITENCPINS_SIA_PIN 9U                   /*!<@brief PORT pin number */
+#define BOARD_INITENCPINS_SIA_PIN_MASK (1U << 9U)      /*!<@brief PORT pin mask */
+                                                       /* @} */
+
+/*! @name PIO1_10 (number 40), P18[3]/PIO1_10_GPIO_ARD
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITENCPINS_SIB_GPIO GPIO                 /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITENCPINS_SIB_GPIO_PIN_MASK (1U << 10U) /*!<@brief GPIO pin mask */
+#define BOARD_INITENCPINS_SIB_PORT 1U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITENCPINS_SIB_PIN 10U                   /*!<@brief PORT pin number */
+#define BOARD_INITENCPINS_SIB_PIN_MASK (1U << 10U)      /*!<@brief PORT pin mask */
+                                                        /* @} */
+
+/*! @name PIO0_15 (number 22), P18[11]/PIO0_15_GPIO_ARD
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITENCPINS_SW_GPIO GPIO                 /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITENCPINS_SW_GPIO_PIN_MASK (1U << 15U) /*!<@brief GPIO pin mask */
+#define BOARD_INITENCPINS_SW_PORT 0U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITENCPINS_SW_PIN 15U                   /*!<@brief PORT pin number */
+#define BOARD_INITENCPINS_SW_PIN_MASK (1U << 15U)      /*!<@brief PORT pin mask */
+                                                       /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitENCPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
+
 #if defined(__cplusplus)
 }
 #endif

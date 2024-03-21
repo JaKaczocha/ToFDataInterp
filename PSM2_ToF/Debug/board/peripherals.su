@@ -1,5 +1,6 @@
-../board/peripherals.c:115:13:FLEXCOMM4_init	8	static
-../board/peripherals.c:149:13:PINT_init	8	static
-../board/peripherals.c:213:13:FLEXCOMM3_init	8	static
-../board/peripherals.c:221:6:BOARD_InitPeripherals_cm33_core0	8	static
-../board/peripherals.c:232:6:BOARD_InitBootPeripherals	8	static
+C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\CMSIS/core_cm33.h:2575:22:__NVIC_SetPriority	16	static
+../board/peripherals.c:119:13:FLEXCOMM4_init	8	static
+../board/peripherals.c:183:13:PINT_init	8	static
+../board/peripherals.c:265:13:FLEXCOMM3_init	8	static
+../board/peripherals.c:273:6:BOARD_InitPeripherals_cm33_core0	8	static
+../board/peripherals.c:284:6:BOARD_InitBootPeripherals	8	static

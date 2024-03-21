@@ -6,11 +6,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Peripherals v13.0
+product: Peripherals v14.0
 processor: LPC55S69
 package_id: LPC55S69JBD100
 mcu_data: ksdk2_0
-processor_version: 14.0.0
+processor_version: 15.0.1
 board: LPCXpresso55S69
 functionalGroups:
 - name: BOARD_InitPeripherals_cm33_core0
@@ -29,6 +29,7 @@ component:
 - global_system_definitions:
   - user_definitions: ''
   - user_includes: ''
+  - global_init: ''
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -71,7 +72,10 @@ instance:
 - peripheral: 'NVIC'
 - config_sets:
   - nvic:
-    - interrupt_table: []
+    - interrupt_table:
+      - 0: []
+      - 1: []
+      - 2: []
     - interrupts: []
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
@@ -143,14 +147,62 @@ instance:
           - IRQn: 'PIN_INT0_IRQn'
           - enable_priority: 'true'
           - priority: '0'
+      - 1:
+        - interrupt_id: 'INT_1'
+        - interrupt_selection: 'PINT.1'
+        - interrupt_type: 'kPINT_PinIntEnableFallEdge'
+        - callback_function: 'detectedSIA'
+        - enable_callback: 'true'
+        - interrupt:
+          - IRQn: 'PIN_INT1_IRQn'
+          - enable_priority: 'true'
+          - priority: '0'
+      - 2:
+        - interrupt_id: 'INT_2'
+        - interrupt_selection: 'PINT.2'
+        - interrupt_type: 'kPINT_PinIntEnableFallEdge'
+        - callback_function: 'detectedSIB'
+        - enable_callback: 'true'
+        - interrupt:
+          - IRQn: 'PIN_INT2_IRQn'
+          - enable_priority: 'true'
+          - priority: '0'
+      - 3:
+        - interrupt_id: 'INT_3'
+        - interrupt_selection: 'PINT.3'
+        - interrupt_type: 'kPINT_PinIntEnableFallEdge'
+        - callback_function: 'detectedSW'
+        - enable_callback: 'true'
+        - interrupt:
+          - IRQn: 'PIN_INT3_IRQn'
+          - enable_priority: 'true'
+          - priority: '0'
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
 static void PINT_init(void) {
   /* PINT initiation  */
   PINT_Init(PINT_PERIPHERAL);
+  /* Interrupt vector PIN_INT1_IRQn priority settings in the NVIC. */
+  NVIC_SetPriority(PINT_PINT_1_IRQN, PINT_PINT_1_IRQ_PRIORITY);
+  /* Interrupt vector PIN_INT2_IRQn priority settings in the NVIC. */
+  NVIC_SetPriority(PINT_PINT_2_IRQN, PINT_PINT_2_IRQ_PRIORITY);
+  /* Interrupt vector PIN_INT3_IRQn priority settings in the NVIC. */
+  NVIC_SetPriority(PINT_PINT_3_IRQN, PINT_PINT_3_IRQ_PRIORITY);
   /* PINT PINT.0 configuration */
   PINT_PinInterruptConfig(PINT_PERIPHERAL, PINT_INT_0, kPINT_PinIntEnableFallEdge, cbToF_Ready);
+  /* PINT PINT.1 configuration */
+  PINT_PinInterruptConfig(PINT_PERIPHERAL, PINT_INT_1, kPINT_PinIntEnableFallEdge, detectedSIA);
+  /* PINT PINT.2 configuration */
+  PINT_PinInterruptConfig(PINT_PERIPHERAL, PINT_INT_2, kPINT_PinIntEnableFallEdge, detectedSIB);
+  /* PINT PINT.3 configuration */
+  PINT_PinInterruptConfig(PINT_PERIPHERAL, PINT_INT_3, kPINT_PinIntEnableFallEdge, detectedSW);
+  /* Enable PINT PINT.1 callback */
+  PINT_EnableCallbackByIndex(PINT_PERIPHERAL, kPINT_PinInt1);
+  /* Enable PINT PINT.2 callback */
+  PINT_EnableCallbackByIndex(PINT_PERIPHERAL, kPINT_PinInt2);
+  /* Enable PINT PINT.3 callback */
+  PINT_EnableCallbackByIndex(PINT_PERIPHERAL, kPINT_PinInt3);
 }
 
 /***********************************************************************************************************************

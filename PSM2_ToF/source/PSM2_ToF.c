@@ -25,7 +25,7 @@
 #include "interpolation.h"
 
 int status;
-
+const uint16_t modeCounter = 4;
 
 uint16_t pixelArr[64];
 
@@ -38,7 +38,7 @@ VL53L5CX_Configuration 	Dev;
 VL53L5CX_ResultsData 	Results;
 uint8_t resolution, isAlive;
 uint16_t idx;
-uint16_t colorMode = 0;
+volatile uint16_t colorMode = 0;
 
 
 
@@ -66,6 +66,19 @@ void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 	//PRINTF("--------------------------------------\r\n");
 }
 
+void detectedSIA(pint_pin_int_t pintr, uint32_t pmatch_status) {
+	//colorMode = ++colorMode % modeCounter;
+}
+/* INT_2 callback function for the PINT component */
+void detectedSIB(pint_pin_int_t pintr, uint32_t pmatch_status) {
+	//colorMode = --colorMode % modeCounter;
+}
+/* INT_3 callback function for the PINT component */
+void detectedSW(pint_pin_int_t pintr, uint32_t pmatch_status) {
+	colorMode = ++colorMode % modeCounter;
+}
+
+
 volatile void drawGreyBilinear( uint16_t maxValue)
 {
 
@@ -79,7 +92,7 @@ volatile void drawGreyBilinear( uint16_t maxValue)
 			}
 		}
 
-	nearestNeighbor(interpArr128, 128, 128, interpArr, 32, 32);
+	nearestNeighbor(interpArr128, 128, 128, interpArr, 64, 64);
 	LCD_Set_Icon(0, 0, 128, 128, interpArr128);
 
 }
@@ -227,7 +240,7 @@ int main(void) {
 		}
 
 
-
+		PRINTF("colorMode %d\r\n", colorMode);
 		LCD_GramRefresh();
 
 

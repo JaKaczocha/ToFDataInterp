@@ -7,16 +7,19 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v14.0
+product: Pins v15.0
 processor: LPC55S69
 package_id: LPC55S69JBD100
 mcu_data: ksdk2_0
-processor_version: 14.0.0
+processor_version: 15.0.1
 board: LPCXpresso55S69
 pin_labels:
 - {pin_num: '81', pin_signal: PIO0_2/FC3_TXD_SCL_MISO_WS/CT_INP1/SCT0_OUT0/SCT_GPI2/SECURE_GPIO0_2, label: 'U6[11]/P20[5]/FC3_SPI_MISO', identifier: LCD_DC}
+- {pin_num: '22', pin_signal: PIO0_15/FC6_CTS_SDA_SSEL0/UTICK_CAP2/CT_INP16/SCT0_OUT2/SD0_WR_PRT/SECURE_GPIO0_15/ADC0_2, label: 'P18[11]/PIO0_15_GPIO_ARD', identifier: SW}
 - {pin_num: '31', pin_signal: PIO1_5/FC0_RXD_SDA_MOSI_DATA/SD0_D2/CTIMER2_MAT0/SCT_GPI0, label: 'P17[17]/P24[1]/PIO1_5_GPIO_ARD', identifier: TIRQ;kPINT_PinInt0}
 - {pin_num: '24', pin_signal: PIO1_8/FC0_CTS_SDA_SSEL0/SD0_CLK/SCT0_OUT1/FC4_SSEL2/ADC0_4, label: 'P17[19]/PIO1_8_GPIO_ARD', identifier: TRST}
+- {pin_num: '10', pin_signal: PIO1_9/FC1_SCK/CT_INP4/SCT0_OUT2/FC4_CTS_SDA_SSEL0/ADC0_12, label: 'S3/P18[1]/PIO1_9_GPIO_ARD', identifier: S3;SIA}
+- {pin_num: '40', pin_signal: PIO1_10/FC1_RXD_SDA_MOSI_DATA/CTIMER1_MAT0/SCT0_OUT3, label: 'P18[3]/PIO1_10_GPIO_ARD', identifier: SIB}
 - {pin_num: '93', pin_signal: PIO1_11/FC1_TXD_SCL_MISO_WS/CT_INP5/USB0_VBUS, label: 'P17[6]/PIO1_11_GPIO_ARD', identifier: TLPn}
 - {pin_num: '73', pin_signal: PIO1_28/FC7_SCK/SD0_D5/CT_INP2/PLU_IN3, label: 'P17[18]/P20[2]/PLU_IN3/GPIO', identifier: LCD_RST}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -40,6 +43,7 @@ void BOARD_InitBootPins(void)
     BOARD_InitDEBUG_UARTPins();
     BOARD_ToFCamPins();
     BOARD_InitPMODPins();
+    BOARD_InitENCPins();
 }
 
 /* clang-format off */
@@ -444,8 +448,8 @@ BOARD_InitBUTTONsPins:
     mode: pullUp, slew_rate: standard, invert: disabled, open_drain: disabled}
   - {pin_num: '64', peripheral: GPIO, signal: 'PIO1, 18', pin_signal: PIO1_18/SD1_POW_EN/SCT0_OUT5/PLU_OUT0, direction: INPUT, mode: pullUp, slew_rate: standard,
     invert: disabled, open_drain: disabled}
-  - {pin_num: '10', peripheral: GPIO, signal: 'PIO1, 9', pin_signal: PIO1_9/FC1_SCK/CT_INP4/SCT0_OUT2/FC4_CTS_SDA_SSEL0/ADC0_12, direction: INPUT, mode: pullUp, slew_rate: standard,
-    invert: disabled, open_drain: disabled, asw: enabled}
+  - {pin_num: '10', peripheral: GPIO, signal: 'PIO1, 9', pin_signal: PIO1_9/FC1_SCK/CT_INP4/SCT0_OUT2/FC4_CTS_SDA_SSEL0/ADC0_12, identifier: S3, direction: INPUT,
+    mode: pullUp, slew_rate: standard, invert: disabled, open_drain: disabled, asw: enabled}
   - {pin_num: '32', peripheral: SYSCON, signal: RESET, pin_signal: RESETN}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1068,6 +1072,172 @@ void BOARD_InitPMODPins(void)
                           * : Enable Digital mode.
                           * Digital input is enabled. */
                          | IOCON_PIO_DIGIMODE(PIO1_28_DIGIMODE_DIGITAL));
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitENCPins:
+- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '10', peripheral: GPIO, signal: 'PIO1, 9', pin_signal: PIO1_9/FC1_SCK/CT_INP4/SCT0_OUT2/FC4_CTS_SDA_SSEL0/ADC0_12, identifier: SIA, direction: INPUT,
+    mode: pullUp}
+  - {pin_num: '40', peripheral: GPIO, signal: 'PIO1, 10', pin_signal: PIO1_10/FC1_RXD_SDA_MOSI_DATA/CTIMER1_MAT0/SCT0_OUT3, direction: INPUT, mode: pullUp}
+  - {pin_num: '22', peripheral: GPIO, signal: 'PIO0, 15', pin_signal: PIO0_15/FC6_CTS_SDA_SSEL0/UTICK_CAP2/CT_INP16/SCT0_OUT2/SD0_WR_PRT/SECURE_GPIO0_15/ADC0_2, direction: INPUT,
+    mode: pullUp}
+  - {pin_num: '10', peripheral: PINT, signal: 'PINT, 1', pin_signal: PIO1_9/FC1_SCK/CT_INP4/SCT0_OUT2/FC4_CTS_SDA_SSEL0/ADC0_12}
+  - {pin_num: '40', peripheral: PINT, signal: 'PINT, 2', pin_signal: PIO1_10/FC1_RXD_SDA_MOSI_DATA/CTIMER1_MAT0/SCT0_OUT3, identifier: ''}
+  - {pin_num: '22', peripheral: PINT, signal: 'PINT, 3', pin_signal: PIO0_15/FC6_CTS_SDA_SSEL0/UTICK_CAP2/CT_INP16/SCT0_OUT2/SD0_WR_PRT/SECURE_GPIO0_15/ADC0_2, identifier: ''}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitENCPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M33 (Core #0) */
+void BOARD_InitENCPins(void)
+{
+    /* Enables the clock for the Input Mux.: Enable Clock. */
+    CLOCK_EnableClock(kCLOCK_InputMux);
+    /* Enables the clock for the I/O controller.: Enable Clock. */
+    CLOCK_EnableClock(kCLOCK_Iocon);
+
+    /* Enables the clock for the GPIO0 module */
+    CLOCK_EnableClock(kCLOCK_Gpio0);
+
+    /* Enables the clock for the GPIO1 module */
+    CLOCK_EnableClock(kCLOCK_Gpio1);
+
+    gpio_pin_config_t SW_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO0_15 (pin 22)  */
+    GPIO_PinInit(BOARD_INITENCPINS_SW_GPIO, BOARD_INITENCPINS_SW_PORT, BOARD_INITENCPINS_SW_PIN, &SW_config);
+
+    gpio_pin_config_t SIA_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_9 (pin 10)  */
+    GPIO_PinInit(BOARD_INITENCPINS_SIA_GPIO, BOARD_INITENCPINS_SIA_PORT, BOARD_INITENCPINS_SIA_PIN, &SIA_config);
+
+    gpio_pin_config_t SIB_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_10 (pin 40)  */
+    GPIO_PinInit(BOARD_INITENCPINS_SIB_GPIO, BOARD_INITENCPINS_SIB_PORT, BOARD_INITENCPINS_SIB_PIN, &SIB_config);
+    /* PIO1_9 is selected for PINT input 1 */
+    INPUTMUX_AttachSignal(INPUTMUX, 1U, kINPUTMUX_GpioPort1Pin9ToPintsel);
+    /* PIO1_10 is selected for PINT input 2 */
+    INPUTMUX_AttachSignal(INPUTMUX, 2U, kINPUTMUX_GpioPort1Pin10ToPintsel);
+    /* PIO0_15 is selected for PINT input 3 */
+    INPUTMUX_AttachSignal(INPUTMUX, 3U, kINPUTMUX_GpioPort0Pin15ToPintsel);
+
+    if (Chip_GetVersion()==1)
+    {
+        IOCON->PIO[0][15] = ((IOCON->PIO[0][15] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_MODE_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT015 (pin 22) is configured as PIO0_15. */
+                         | IOCON_PIO_FUNC(PIO0_15_FUNC_ALT0)
+
+                         /* Selects function mode (on-chip pull-up/pull-down resistor control).
+                          * : Pull-up.
+                          * Pull-up resistor enabled. */
+                         | IOCON_PIO_MODE(PIO0_15_MODE_PULL_UP)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO0_15_DIGIMODE_DIGITAL));
+    }
+    else
+    {
+        IOCON->PIO[0][15] = ((IOCON->PIO[0][15] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_MODE_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT015 (pin 22) is configured as PIO0_15. */
+                         | IOCON_PIO_FUNC(PIO0_15_FUNC_ALT0)
+
+                         /* Selects function mode (on-chip pull-up/pull-down resistor control).
+                          * : Pull-up.
+                          * Pull-up resistor enabled. */
+                         | IOCON_PIO_MODE(PIO0_15_MODE_PULL_UP)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO0_15_DIGIMODE_DIGITAL));
+    }
+
+    IOCON->PIO[1][10] = ((IOCON->PIO[1][10] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_MODE_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT110 (pin 40) is configured as PIO1_10. */
+                         | IOCON_PIO_FUNC(PIO1_10_FUNC_ALT0)
+
+                         /* Selects function mode (on-chip pull-up/pull-down resistor control).
+                          * : Pull-up.
+                          * Pull-up resistor enabled. */
+                         | IOCON_PIO_MODE(PIO1_10_MODE_PULL_UP)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO1_10_DIGIMODE_DIGITAL));
+
+    if (Chip_GetVersion()==1)
+    {
+        IOCON->PIO[1][9] = ((IOCON->PIO[1][9] &
+                         /* Mask bits to zero which are setting */
+                         (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_MODE_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                        /* Selects pin function.
+                         * : PORT19 (pin 10) is configured as PIO1_9. */
+                        | IOCON_PIO_FUNC(PIO1_9_FUNC_ALT0)
+
+                        /* Selects function mode (on-chip pull-up/pull-down resistor control).
+                         * : Pull-up.
+                         * Pull-up resistor enabled. */
+                        | IOCON_PIO_MODE(PIO1_9_MODE_PULL_UP)
+
+                        /* Select Digital mode.
+                         * : Enable Digital mode.
+                         * Digital input is enabled. */
+                        | IOCON_PIO_DIGIMODE(PIO1_9_DIGIMODE_DIGITAL));
+    }
+    else
+    {
+        IOCON->PIO[1][9] = ((IOCON->PIO[1][9] &
+                         /* Mask bits to zero which are setting */
+                         (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_MODE_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                        /* Selects pin function.
+                         * : PORT19 (pin 10) is configured as PIO1_9. */
+                        | IOCON_PIO_FUNC(PIO1_9_FUNC_ALT0)
+
+                        /* Selects function mode (on-chip pull-up/pull-down resistor control).
+                         * : Pull-up.
+                         * Pull-up resistor enabled. */
+                        | IOCON_PIO_MODE(PIO1_9_MODE_PULL_UP)
+
+                        /* Select Digital mode.
+                         * : Enable Digital mode.
+                         * Digital input is enabled. */
+                        | IOCON_PIO_DIGIMODE(PIO1_9_DIGIMODE_DIGITAL));
+    }
 }
 /***********************************************************************************************************************
  * EOF
