@@ -24,9 +24,9 @@ uint16_t convertToColor(const uint16_t value,const float maxValue) {
     uint16_t r, g, b;
 
     // Map to red. The closer to 2000, the less intense the red.
-    r = 31 - (int)((value / maxValue) * 31);
+    r = 31 - (int)(((float)value / maxValue) * 31.0f);
     g = 0;
-    b = (int)((value / maxValue) * 31);
+    b = (int)(((float)value / maxValue) * 31.0f);
 
 
     // Combine the red, green and blue values into a uint16_t color value

@@ -29,7 +29,7 @@ int status;
 
 uint16_t pixelArr[64];
 
-uint16_t  interpArr[32*32];
+uint16_t  interpArr[64*64];
 uint16_t  interpArr128[128*128];
 
 volatile int IntCount;
@@ -38,10 +38,7 @@ VL53L5CX_Configuration 	Dev;
 VL53L5CX_ResultsData 	Results;
 uint8_t resolution, isAlive;
 uint16_t idx;
-uint16_t new_min = 0;
-uint16_t new_max = 255;
-uint16_t old_min = 1;
-uint16_t old_max = 4000;
+uint16_t colorMode = 0;
 
 
 
@@ -72,13 +69,13 @@ void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 volatile void drawGreyBilinear( uint16_t maxValue)
 {
 
-	bilinear(interpArr, 32, 32, pixelArr, 8, 8);
+	bilinear(interpArr, 64, 64, pixelArr, 8, 8);
 
-	for(int j=0; j<32; j++)
+	for(int j=0; j<64; j++)
 		{
-			for(int i=0; i < 32; i++)
+			for(int i=0; i < 64; i++)
 			{
-				interpArr[j*32+i] = convertToGreyscale(interpArr[j*32+i],maxValue);
+				interpArr[j*64+i] = convertToGreyscale(interpArr[j*64+i],maxValue);
 			}
 		}
 
@@ -104,17 +101,17 @@ volatile void drawGreyNearest(uint16_t maxValue)
 volatile void drawColorBilinear( uint16_t maxValue)
 {
 
-	bilinear(interpArr, 32, 32, pixelArr, 8, 8);
+	bilinear(interpArr, 64, 64, pixelArr, 8, 8);
 
-	for(int j=0; j<32; j++)
+	for(int j=0; j<64; j++)
 		{
-			for(int i=0; i < 32; i++)
+			for(int i=0; i < 64; i++)
 			{
-				interpArr[j*32+i] = convertToColor(interpArr[j*32+i],maxValue);
+				interpArr[j*64+i] = convertToColor(interpArr[j*64+i],maxValue);
 			}
 		}
 
-	nearestNeighbor(interpArr128, 128, 128, interpArr, 32, 32);
+	nearestNeighbor(interpArr128, 128, 128, interpArr, 64, 64);
 	LCD_Set_Icon(0, 0, 128, 128, interpArr128);
 
 }
@@ -210,8 +207,26 @@ int main(void) {
 	while(1) {
 		//LCD_Clear(0x0000);
 
+		switch(colorMode)
+		{
+			case 0:
+				drawColorBilinear(4000);
+				break;
+			case 1:
+				drawGreyBilinear(4000);
+				break;
+			case 2:
+				drawColorNearest(4000);
+				break;
+			case 3:
+				drawGreyNearest(4000);
+				break;
+			default:
+				drawColorBilinear(4000);
+				break;
+		}
 
-		drawColorNearest(4000); // correct functions arguments
+
 
 		LCD_GramRefresh();
 

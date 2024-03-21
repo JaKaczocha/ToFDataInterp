@@ -1,6 +1,6 @@
-C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\device/LPC55S69_cm33_core0.h:31258:24:Chip_GetVersion	16	static
-C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\drivers/fsl_clock.h:983:20:CLOCK_EnableClock	24	static
-C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\drivers/fsl_iocon.h:182:22:IOCON_PinMuxSet	24	static
+C:\Users\dawid\Documents\MCUXpressoIDE_11.8.1_1197\workspace\ToF_3D\PSM2_ToF\device/LPC55S69_cm33_core0.h:31258:24:Chip_GetVersion	16	static
+C:\Users\dawid\Documents\MCUXpressoIDE_11.8.1_1197\workspace\ToF_3D\PSM2_ToF\drivers/fsl_clock.h:983:20:CLOCK_EnableClock	24	static
+C:\Users\dawid\Documents\MCUXpressoIDE_11.8.1_1197\workspace\ToF_3D\PSM2_ToF\drivers/fsl_iocon.h:182:22:IOCON_PinMuxSet	24	static
 ../board/pin_mux.c:38:6:BOARD_InitBootPins	8	static
 ../board/pin_mux.c:66:6:BOARD_InitDEBUG_UARTPins	16	static
 ../board/pin_mux.c:125:6:BOARD_InitSWD_DEBUGPins	32	static

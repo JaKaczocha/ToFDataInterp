@@ -6,11 +6,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Peripherals v14.0
+product: Peripherals v13.0
 processor: LPC55S69
 package_id: LPC55S69JBD100
 mcu_data: ksdk2_0
-processor_version: 15.0.1
+processor_version: 14.0.0
 board: LPCXpresso55S69
 functionalGroups:
 - name: BOARD_InitPeripherals_cm33_core0
@@ -29,7 +29,6 @@ component:
 - global_system_definitions:
   - user_definitions: ''
   - user_includes: ''
-  - global_init: ''
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -101,14 +100,14 @@ instance:
     - clockSourceFreq: 'BOARD_BootClockPLL150M'
     - i2c_master_config:
       - enableMaster: 'true'
-      - baudRate_Bps: '400000'
+      - baudRate_Bps: '1000000'
       - enableTimeout: 'false'
       - timeout_Ms: '35'
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 const i2c_master_config_t FLEXCOMM4_config = {
   .enableMaster = true,
-  .baudRate_Bps = 400000UL,
+  .baudRate_Bps = 1000000UL,
   .enableTimeout = false,
   .timeout_Ms = 35U
 };
