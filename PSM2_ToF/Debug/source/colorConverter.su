@@ -1,2 +1,2 @@
 ../source/colorConverter.c:7:10:convertToGreyscale	24	static
-../source/colorConverter.c:21:10:convertToColor	24	static
+../source/colorConverter.c:23:10:convertToColor	24	static

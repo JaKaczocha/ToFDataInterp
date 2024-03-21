@@ -1,11 +1,13 @@
 #include "colorConverter.h"
 #include <stdio.h>
 #include <math.h>
-
+#include <stdbool.h>
 
 
 uint16_t convertToGreyscale(const uint16_t value,const float maxValue) {
     uint16_t r, g, b;
+
+
 
     // Scale the grayscale value to 0-31
     uint16_t scaledValue = (int)((value / maxValue) * 31 + 0.5);

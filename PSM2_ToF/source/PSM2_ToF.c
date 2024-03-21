@@ -26,11 +26,11 @@
 
 int status;
 
-//int pixelArr[8][8];
-//int greyPixelArr[8][8];
+
 uint16_t pixelArr[64];
-uint16_t greyPixelArr[64];
+
 uint16_t  interpArr[32*32];
+uint16_t  interpArr128[128*128];
 
 volatile int IntCount;
 uint8_t p_data_ready;
@@ -42,6 +42,8 @@ uint16_t new_min = 0;
 uint16_t new_max = 255;
 uint16_t old_min = 1;
 uint16_t old_max = 4000;
+
+
 
 //INTERPOLACJA LINOWA ŻEBY ZWIEKSZYC ROZDZIELCZOSC!!!!!!!!!11!1
 
@@ -67,54 +69,67 @@ void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 	//PRINTF("--------------------------------------\r\n");
 }
 
-volatile void drawPixels(uint16_t width, uint16_t height, uint8_t x, uint8_t y)
+volatile void drawGreyBilinear( uint16_t maxValue)
 {
 
-	/*
-	for(int j=0; j<width; j++)
-	{
-		for(int i=0; i<height; i++)
-		{
-
-			greyPixelArr[j*8+i] = convertToColor(pixelArr[j*8+i],1000);
-
-			LCD_Draw_FillRect(x*i, y*j, x*(i+1), y*(j+1), greyPixelArr[j*8+i]);
-		}
-	}
-
-	for(int j = 0; j < width;j++) {
-			for(int i = 0; i < height;i++) {
-				//PRINTF("%4d ", Results.distance_mm[(VL53L5CX_NB_TARGET_PER_ZONE * i)+(8*j)]);
-
-				PRINTF("%4d ", interpArr[j*8+i]);
-			}
-			PRINTF("\r\n");
-		}
-	PRINTF("--------------------------------------\r\n");
-
-	*/
 	bilinear(interpArr, 32, 32, pixelArr, 8, 8);
 
-	for(int j=0; j<width; j++)
+	for(int j=0; j<32; j++)
 		{
-			for(int i=0; i<height; i++)
+			for(int i=0; i < 32; i++)
 			{
-				interpArr[j*width+i] = convertToColor(interpArr[j*width+i],4000);
-
-				//LCD_Draw_FillRect(i,j,i*4 - 1,j*4-1,interpArr[j*width+i]);
-				LCD_Draw_Point(i, j, interpArr[j*width+i]);
+				interpArr[j*32+i] = convertToGreyscale(interpArr[j*32+i],maxValue);
 			}
 		}
 
-	for(int i = 0; i < 128; i++) {
-		for(int j = 0; j < 128; j++) {
-			LCD_Draw_Point(i, j, interpArr[(j/4*width+i/4)]);
+	nearestNeighbor(interpArr128, 128, 128, interpArr, 32, 32);
+	LCD_Set_Icon(0, 0, 128, 128, interpArr128);
+
+}
+
+volatile void drawGreyNearest(uint16_t maxValue)
+{
+	for(int j=0; j<8; j++)
+		{
+			for(int i=0; i<8; i++)
+			{
+				interpArr[j*8+i] = convertToGreyscale(pixelArr[j*8+i],maxValue);
+			}
 		}
-	}
+	nearestNeighbor(interpArr128, 128, 128, interpArr, 8, 8);
+	LCD_Set_Icon(0, 0, 128, 128, interpArr128);
 
-	//LCD_Set_Bitmap(interpArr);
+}
 
+volatile void drawColorBilinear( uint16_t maxValue)
+{
 
+	bilinear(interpArr, 32, 32, pixelArr, 8, 8);
+
+	for(int j=0; j<32; j++)
+		{
+			for(int i=0; i < 32; i++)
+			{
+				interpArr[j*32+i] = convertToColor(interpArr[j*32+i],maxValue);
+			}
+		}
+
+	nearestNeighbor(interpArr128, 128, 128, interpArr, 32, 32);
+	LCD_Set_Icon(0, 0, 128, 128, interpArr128);
+
+}
+
+volatile void drawColorNearest(uint16_t maxValue)
+{
+	for(int j=0; j<8; j++)
+		{
+			for(int i=0; i<8; i++)
+			{
+				interpArr[j*8+i] = convertToColor(pixelArr[j*8+i],maxValue);
+			}
+		}
+	nearestNeighbor(interpArr128, 128, 128, interpArr, 8, 8);
+	LCD_Set_Icon(0, 0, 128, 128, interpArr128);
 
 }
 
@@ -196,7 +211,7 @@ int main(void) {
 		//LCD_Clear(0x0000);
 
 
-		drawPixels(32, 32, 1, 1);
+		drawColorNearest(4000); // correct functions arguments
 
 		LCD_GramRefresh();
 
