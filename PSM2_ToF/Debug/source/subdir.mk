@@ -9,6 +9,7 @@ C_SRCS += \
 ../source/interpolation.c \
 ../source/lcd.c \
 ../source/platform.c \
+../source/render.c \
 ../source/semihost_hardfault.c \
 ../source/vl53l5cx_api.c 
 
@@ -18,6 +19,7 @@ C_DEPS += \
 ./source/interpolation.d \
 ./source/lcd.d \
 ./source/platform.d \
+./source/render.d \
 ./source/semihost_hardfault.d \
 ./source/vl53l5cx_api.d 
 
@@ -27,6 +29,7 @@ OBJS += \
 ./source/interpolation.o \
 ./source/lcd.o \
 ./source/platform.o \
+./source/render.o \
 ./source/semihost_hardfault.o \
 ./source/vl53l5cx_api.o 
 
@@ -43,7 +46,7 @@ source/%.o: ../source/%.c source/subdir.mk
 clean: clean-source
 
 clean-source:
-	-$(RM) ./source/PSM2_ToF.d ./source/PSM2_ToF.o ./source/colorConverter.d ./source/colorConverter.o ./source/interpolation.d ./source/interpolation.o ./source/lcd.d ./source/lcd.o ./source/platform.d ./source/platform.o ./source/semihost_hardfault.d ./source/semihost_hardfault.o ./source/vl53l5cx_api.d ./source/vl53l5cx_api.o
+	-$(RM) ./source/PSM2_ToF.d ./source/PSM2_ToF.o ./source/colorConverter.d ./source/colorConverter.o ./source/interpolation.d ./source/interpolation.o ./source/lcd.d ./source/lcd.o ./source/platform.d ./source/platform.o ./source/render.d ./source/render.o ./source/semihost_hardfault.d ./source/semihost_hardfault.o ./source/vl53l5cx_api.d ./source/vl53l5cx_api.o
 
 .PHONY: clean-source
 

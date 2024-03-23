@@ -10,8 +10,8 @@
 
 #include <stdint.h>
 
-int nearestNeighbor(uint16_t dest[], uint16_t destWidth, uint16_t destHeight,  uint16_t src[],uint16_t srcWidth, uint16_t srcHeight);
-void bilinear(uint16_t dest[],uint16_t destWidth,uint16_t destHeight, uint16_t src[],uint16_t srcWidth,uint16_t srcHeight);
+int nearestNeighbor(uint16_t dest[], uint16_t destWidth, uint16_t destHeight, const uint16_t src[],const uint16_t srcWidth, const uint16_t srcHeight);
+void bilinear(uint16_t dest[],uint16_t destWidth,uint16_t destHeight,const uint16_t src[],const uint16_t srcWidth,const uint16_t srcHeight);
 
 
 #endif /* INTERPOLATION_H_ */

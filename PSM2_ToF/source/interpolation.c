@@ -1,12 +1,6 @@
-/*
- * interpolation.c
- *
- *  Created on: 15 mar 2024
- *      Author: User
- */
 #include "interpolation.h"
 
-int nearestNeighbor(uint16_t dest[], uint16_t destWidth, uint16_t destHeight, uint16_t src[], uint16_t srcWidth, uint16_t srcHeight)
+int nearestNeighbor(uint16_t dest[], uint16_t destWidth, uint16_t destHeight, const uint16_t src[], const uint16_t srcWidth, const uint16_t srcHeight)
 {
 
     const int Xscale = destWidth / srcWidth;
@@ -31,7 +25,7 @@ int nearestNeighbor(uint16_t dest[], uint16_t destWidth, uint16_t destHeight, ui
 
 
 
-void bilinear(uint16_t dest[], uint16_t destWidth, uint16_t destHeight,uint16_t src[], uint16_t srcWidth, uint16_t srcHeight) {
+void bilinear(uint16_t dest[], uint16_t destWidth, uint16_t destHeight,const uint16_t src[],const  uint16_t srcWidth,const  uint16_t srcHeight) {
     float x_ratio = ((float)(srcWidth - 1)) / destWidth;
     float y_ratio = ((float)(srcHeight - 1)) / destHeight;
     float x_diff, y_diff;
