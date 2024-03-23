@@ -35,10 +35,6 @@ extern "C" {
 /* PINT interrupt vector priority. */
 #define PINT_PINT_1_IRQ_PRIORITY 0
 /* PINT interrupt vector ID (number). */
-#define PINT_PINT_2_IRQN PIN_INT2_IRQn
-/* PINT interrupt vector priority. */
-#define PINT_PINT_2_IRQ_PRIORITY 0
-/* PINT interrupt vector ID (number). */
 #define PINT_PINT_3_IRQN PIN_INT3_IRQn
 /* PINT interrupt vector priority. */
 #define PINT_PINT_3_IRQ_PRIORITY 0
@@ -46,8 +42,6 @@ extern "C" {
 #define PINT_INT_0 kPINT_PinInt0
 /* Definition of PINT interrupt ID for interrupt 1  */
 #define PINT_INT_1 kPINT_PinInt1
-/* Definition of PINT interrupt ID for interrupt 2  */
-#define PINT_INT_2 kPINT_PinInt2
 /* Definition of PINT interrupt ID for interrupt 3  */
 #define PINT_INT_3 kPINT_PinInt3
 /* BOARD_InitPeripherals_cm33_core0 defines for FLEXCOMM3 */
@@ -68,9 +62,7 @@ extern const spi_master_config_t FLEXCOMM3_config;
 /* INT_0 callback function for the PINT component */
 extern void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status);
 /* INT_1 callback function for the PINT component */
-extern void detectedSIA(pint_pin_int_t pintr, uint32_t pmatch_status);
-/* INT_2 callback function for the PINT component */
-extern void detectedSIB(pint_pin_int_t pintr, uint32_t pmatch_status);
+extern void detectedENCA(pint_pin_int_t pintr, uint32_t pmatch_status);
 /* INT_3 callback function for the PINT component */
 extern void detectedSW(pint_pin_int_t pintr, uint32_t pmatch_status);
 

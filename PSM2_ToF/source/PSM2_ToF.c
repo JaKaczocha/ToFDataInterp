@@ -38,17 +38,22 @@ VL53L5CX_Configuration 	Dev;
 VL53L5CX_ResultsData 	Results;
 uint8_t resolution, isAlive;
 uint16_t idx;
-volatile uint16_t colorMode = 0;
+volatile int16_t colorMode = 0;
+volatile uint16_t bounce = 0;
 
-
-
+uint16_t oldVal = 999;
 //INTERPOLACJA LINOWA ŻEBY ZWIEKSZYC ROZDZIELCZOSC!!!!!!!!!11!1
-
+void SysTick_Handler(void)
+{
+	bounce = bounce ? bounce - 1 : 0;
+}
 
 void delay_ms(uint32_t delay)
 {
 	for(volatile int j=delay*100000; j > 0;j--);
 }
+
+
 
 void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 
@@ -63,19 +68,36 @@ void cbToF_Ready(pint_pin_int_t pintr, uint32_t pmatch_status) {
 		}
 		//PRINTF("\r\n");
 	}
+
 	//PRINTF("--------------------------------------\r\n");
 }
+/* SLICE_2 callback function for the PINT component */
+void detectedENCA(pint_pin_int_t pintr, uint32_t pmatch_status) {
+	if(!bounce) {
+		bounce = 15;
+		if(!GPIO_PinRead(BOARD_INITENCPINS_SIB_GPIO, BOARD_INITENCPINS_SIB_PORT, BOARD_INITENCPINS_SIB_PIN)) {
+				++colorMode;
+				if (colorMode >= modeCounter) {
+				        colorMode = 0;
+				}
 
-void detectedSIA(pint_pin_int_t pintr, uint32_t pmatch_status) {
-	//colorMode = ++colorMode % modeCounter;
+		} else {
+			--colorMode;
+			if (colorMode < 0) {
+				colorMode = modeCounter - 1;
+			}
+
+		}
+
+	}
 }
-/* INT_2 callback function for the PINT component */
-void detectedSIB(pint_pin_int_t pintr, uint32_t pmatch_status) {
-	//colorMode = --colorMode % modeCounter;
-}
-/* INT_3 callback function for the PINT component */
+
 void detectedSW(pint_pin_int_t pintr, uint32_t pmatch_status) {
-	colorMode = ++colorMode % modeCounter;
+	if(!bounce) {
+		bounce = 15;
+		colorMode = 0;
+
+	}
 }
 
 
@@ -171,6 +193,7 @@ int main(void) {
 	GPIO_PinWrite(BOARD_TOFCAMPINS_TLPn_GPIO, BOARD_TOFCAMPINS_TLPn_PORT, BOARD_TOFCAMPINS_TLPn_PIN, 1);
 	delay_ms(20);
 
+	SysTick_Config(SystemCoreClock / 100U);
 	LCD_Init(FLEXCOMM3_PERIPHERAL);
 	LCD_Puts(10, 30, "Before vl53l5cx_is_alive...", 0x0000);
 	PRINTF("Before vl53l5cx_is_alive...");
@@ -240,8 +263,13 @@ int main(void) {
 		}
 
 
-		PRINTF("colorMode %d\r\n", colorMode);
+		if(colorMode != oldVal) {
+			oldVal = colorMode;
+			PRINTF("colorMode %d\r\n", colorMode);
+		}
+
 		LCD_GramRefresh();
+
 
 
 	}

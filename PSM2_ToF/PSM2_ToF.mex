@@ -1088,11 +1088,6 @@
                         <data type="Boolean">true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="PINT.pint.2" description="Signal PINT, 2 is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals_cm33_core0">
-                     <feature name="routed" evaluation="">
-                        <data type="Boolean">true</data>
-                     </feature>
-                  </dependency>
                   <dependency resourceType="PeripheralUnifiedSignal" resourceId="PINT.pint.3" description="Signal PINT, 3 is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals_cm33_core0">
                      <feature name="routed" evaluation="">
                         <data type="Boolean">true</data>
@@ -1130,7 +1125,6 @@
                         <array name="interrupt_table">
                            <struct name="0"/>
                            <struct name="1"/>
-                           <struct name="2"/>
                         </array>
                         <array name="interrupts"/>
                      </config_set>
@@ -1159,7 +1153,7 @@
                               <setting name="enable_callback" value="false"/>
                               <struct name="interrupt">
                                  <setting name="IRQn" value="PIN_INT0_IRQn"/>
-                                 <setting name="enable_priority" value="true"/>
+                                 <setting name="enable_priority" value="false"/>
                                  <setting name="priority" value="0"/>
                               </struct>
                            </struct>
@@ -1167,7 +1161,7 @@
                               <setting name="interrupt_id" value="INT_1"/>
                               <setting name="interrupt_selection" value="PINT.1"/>
                               <setting name="interrupt_type" value="kPINT_PinIntEnableFallEdge"/>
-                              <setting name="callback_function" value="detectedSIA"/>
+                              <setting name="callback_function" value="detectedENCA"/>
                               <setting name="enable_callback" value="true"/>
                               <struct name="interrupt">
                                  <setting name="IRQn" value="PIN_INT1_IRQn"/>
@@ -1176,18 +1170,6 @@
                               </struct>
                            </struct>
                            <struct name="2">
-                              <setting name="interrupt_id" value="INT_2"/>
-                              <setting name="interrupt_selection" value="PINT.2"/>
-                              <setting name="interrupt_type" value="kPINT_PinIntEnableFallEdge"/>
-                              <setting name="callback_function" value="detectedSIB"/>
-                              <setting name="enable_callback" value="true"/>
-                              <struct name="interrupt">
-                                 <setting name="IRQn" value="PIN_INT2_IRQn"/>
-                                 <setting name="enable_priority" value="true"/>
-                                 <setting name="priority" value="0"/>
-                              </struct>
-                           </struct>
-                           <struct name="3">
                               <setting name="interrupt_id" value="INT_3"/>
                               <setting name="interrupt_selection" value="PINT.3"/>
                               <setting name="interrupt_type" value="kPINT_PinIntEnableFallEdge"/>
@@ -1242,7 +1224,6 @@
                         <array name="interrupt_table">
                            <struct name="0"/>
                            <struct name="1"/>
-                           <struct name="2"/>
                         </array>
                         <array name="interrupts"/>
                      </config_set>
