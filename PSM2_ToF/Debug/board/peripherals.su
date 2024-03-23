@@ -1,0 +1,6 @@
+C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\CMSIS/core_cm33.h:2575:22:__NVIC_SetPriority	16	static
+../board/peripherals.c:118:13:FLEXCOMM4_init	8	static
+../board/peripherals.c:172:13:PINT_init	8	static
+../board/peripherals.c:248:13:FLEXCOMM3_init	8	static
+../board/peripherals.c:256:6:BOARD_InitPeripherals_cm33_core0	8	static
+../board/peripherals.c:267:6:BOARD_InitBootPeripherals	8	static

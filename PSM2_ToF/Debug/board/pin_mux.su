@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\device/LPC55S69_cm33_core0.h:31258:24:Chip_GetVersion	16	static
+C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\drivers/fsl_clock.h:983:20:CLOCK_EnableClock	24	static
+C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\drivers/fsl_iocon.h:182:22:IOCON_PinMuxSet	24	static
+../board/pin_mux.c:41:6:BOARD_InitBootPins	8	static
+../board/pin_mux.c:70:6:BOARD_InitDEBUG_UARTPins	16	static
+../board/pin_mux.c:129:6:BOARD_InitSWD_DEBUGPins	32	static
+../board/pin_mux.c:262:6:BOARD_InitUSBPins	32	static
+../board/pin_mux.c:366:6:BOARD_InitLEDsPins	32	static
+../board/pin_mux.c:465:6:BOARD_InitBUTTONsPins	40	static
+../board/pin_mux.c:602:6:BOARD_InitI2SPins	48	static
+../board/pin_mux.c:768:6:BOARD_InitACCELPins	24	static
+../board/pin_mux.c:855:6:BOARD_ToFCamPins	24	static
+../board/pin_mux.c:981:6:BOARD_InitPMODPins	16	static
+../board/pin_mux.c:1102:6:BOARD_InitENCPins	24	static

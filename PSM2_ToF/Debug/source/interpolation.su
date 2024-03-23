@@ -1,0 +1,2 @@
+../source/interpolation.c:3:5:nearestNeighbor	48	static
+../source/interpolation.c:28:6:bilinear	80	static
