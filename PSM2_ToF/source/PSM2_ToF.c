@@ -24,8 +24,13 @@ struct Matrix {
 };
 
 int status;
+const uint16_t colorModeCounter = 4;
 const uint16_t modeCounter = 4;
+uint8_t valueJump;
+int8_t changeDirection = 0;
+uint8_t mode = 0;
 
+volatile bool nextMode = 0;
 uint16_t pixelArr[64];
 
 uint16_t  interpArr[64*64];
@@ -73,17 +78,10 @@ void detectedENCA(pint_pin_int_t pintr, uint32_t pmatch_status) {
 	if(!bounce) {
 		bounce = 15;
 		if(!GPIO_PinRead(BOARD_INITENCPINS_SIB_GPIO, BOARD_INITENCPINS_SIB_PORT, BOARD_INITENCPINS_SIB_PIN)) {
-			++colorMode;
-			if (colorMode >= modeCounter) {
-				colorMode = 0;
-			}
+			++changeDirection;
 
 		} else {
-			--colorMode;
-			if (colorMode < 0) {
-				colorMode = modeCounter - 1;
-			}
-
+			--changeDirection;
 		}
 
 	}
@@ -92,7 +90,7 @@ void detectedENCA(pint_pin_int_t pintr, uint32_t pmatch_status) {
 void detectedSW(pint_pin_int_t pintr, uint32_t pmatch_status) {
 	if(!bounce) {
 		bounce = 15;
-		colorMode = 0;
+		nextMode = 1;
 
 	}
 }
@@ -200,6 +198,41 @@ int main(void) {
 			drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
 			break;
 		}
+
+		mode += nextMode;
+		nextMode = 0;
+		if(mode >= modeCounter) {
+			mode = 0;
+		}
+		if(changeDirection) {
+			switch(mode) {
+				case 0: //draw option
+					colorMode += changeDirection;
+					if(colorMode < 0) {
+						colorMode = colorModeCounter - 1;
+					} else if ( colorMode >= colorModeCounter) {
+						colorMode = 0;
+					}
+					break;
+				case 1: //min value option ..
+					minValue += changeDirection * valueJump;
+					if(minValue >= maxValue) {
+						minValue = 1;
+					}
+					break;
+				case 2: // max value option
+					maxValue += changeDirection * valueJump;
+					if(maxValue > 4000 || maxValue <= minValue) {
+						maxValue = 4000;
+					}
+					break;
+				case 3: // value jump option
+					valueJump += changeDirection;
+					break;
+			}
+			changeDirection = 0;
+		}
+
 		LCD_GramRefresh();
 	}
 
