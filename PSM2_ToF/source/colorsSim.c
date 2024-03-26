@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 int counter = 1;
-
+/*
 uint16_t simulateToF(uint16_t matrix[8][8]) {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -97,4 +97,4 @@ int main() {
     //}
     
     return 0;
-}
+}*/

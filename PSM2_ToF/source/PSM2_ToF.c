@@ -13,6 +13,7 @@
 #include "colorConverter.h"
 #include "interpolation.h"
 #include "render.h"
+#include "userInterface.h"
 
 #define TOF_WIDTH 8
 #define TOF_HEIGHT 8
@@ -25,11 +26,12 @@ struct Matrix {
 
 int status;
 const uint16_t colorModeCounter = 4;
-const uint16_t modeCounter = 4;
+const uint16_t modeCounter = 5;
 uint8_t valueJump;
 int8_t changeDirection = 0;
 uint8_t mode = 0;
-
+char* buffor[30];
+char* colorModeName[20];
 volatile bool nextMode = 0;
 uint16_t pixelArr[64];
 
@@ -183,55 +185,34 @@ int main(void) {
 		switch(colorMode)
 		{
 		case 0:
+			strcpy(colorModeName, "bilinear RB");
 			drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
 			break;
 		case 1:
+			strcpy(colorModeName, "bilinear grey");
 			drawGreyBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
 			break;
 		case 2:
+			strcpy(colorModeName, "nearest RB");
 			drawColorNearest(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
 			break;
 		case 3:
+			strcpy(colorModeName, "nearest grey");
 			drawGreyNearest(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
 			break;
 		default:
+			strcpy(colorModeName, "bilinear RB");
 			drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
 			break;
 		}
 
-		mode += nextMode;
-		nextMode = 0;
-		if(mode >= modeCounter) {
-			mode = 0;
+		updateMode(&mode, &nextMode, modeCounter);
+		updateValue(mode, &changeDirection,&colorMode,&minValue, &maxValue, &valueJump,colorModeCounter, modeCounter);
+		if(mode) {
+			displayInterface(buffor,colorModeName, minValue, maxValue, valueJump,mode);
 		}
-		if(changeDirection) {
-			switch(mode) {
-				case 0: //draw option
-					colorMode += changeDirection;
-					if(colorMode < 0) {
-						colorMode = colorModeCounter - 1;
-					} else if ( colorMode >= colorModeCounter) {
-						colorMode = 0;
-					}
-					break;
-				case 1: //min value option ..
-					minValue += changeDirection * valueJump;
-					if(minValue >= maxValue) {
-						minValue = 1;
-					}
-					break;
-				case 2: // max value option
-					maxValue += changeDirection * valueJump;
-					if(maxValue > 4000 || maxValue <= minValue) {
-						maxValue = 4000;
-					}
-					break;
-				case 3: // value jump option
-					valueJump += changeDirection;
-					break;
-			}
-			changeDirection = 0;
-		}
+
+		
 
 		LCD_GramRefresh();
 	}

@@ -1,0 +1,3 @@
+../source/userInterface.c:8:9:updateMode	24	static
+../source/userInterface.c:16:9:updateValue	24	static
+../source/userInterface.c:53:9:displayInterface	32	static

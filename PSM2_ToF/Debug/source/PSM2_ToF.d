@@ -31,7 +31,8 @@ source/PSM2_ToF.o source/PSM2_ToF.d: ../source/PSM2_ToF.c \
  C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\component\serial_manager/fsl_component_serial_port_uart.h \
  C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\component\uart/fsl_adapter_uart.h \
  ../source/lcd.h ../source/vl53l5cx_api.h ../source/platform.h \
- ../source/colorConverter.h ../source/interpolation.h ../source/render.h
+ ../source/colorConverter.h ../source/interpolation.h ../source/render.h \
+ ../source/userInterface.h
 C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\board/board.h:
 C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\board/clock_config.h:
 C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\drivers/fsl_common.h:
@@ -69,3 +70,4 @@ C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\component\uart/fsl_adapter_uart.h:
 ../source/colorConverter.h:
 ../source/interpolation.h:
 ../source/render.h:
+../source/userInterface.h:
