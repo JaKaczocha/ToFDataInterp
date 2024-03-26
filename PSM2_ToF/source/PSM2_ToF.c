@@ -35,8 +35,8 @@ char* colorModeName[20];
 volatile bool nextMode = 0;
 uint16_t pixelArr[64];
 
-uint16_t  interpArr[64*64];
-uint16_t  interpArr128[128*128];
+uint16_t  tmpArr[80*64];
+uint16_t  dstArr[LCD_WIDTH*LCD_HEIGHT];
 uint16_t minValue = 1, maxValue = 4000;
 
 volatile int IntCount;
@@ -171,13 +171,13 @@ int main(void) {
 	srcMatrix.height = TOF_HEIGHT;
 	struct Matrix tmpMatrix;
 
-	tmpMatrix.array = interpArr;
-	tmpMatrix.width = 64;
-	tmpMatrix.height = 64;
+	tmpMatrix.array = tmpArr;
+	tmpMatrix.width = LCD_WIDTH/2;
+	tmpMatrix.height = LCD_HEIGHT/2;
 	struct Matrix dstMatrix;
-	dstMatrix.array = interpArr128;
-	dstMatrix.width = 128;
-	dstMatrix.height = 128;
+	dstMatrix.array = dstArr;
+	dstMatrix.width = LCD_WIDTH;
+	dstMatrix.height = LCD_HEIGHT;
 
 	LCD_Clear(0xffffff);
 	LCD_Puts(10, 30, "before loop...", 0x0000);

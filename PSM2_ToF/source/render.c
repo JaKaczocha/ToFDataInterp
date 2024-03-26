@@ -16,7 +16,7 @@ volatile void drawGreyBilinear(const struct Matrix src,struct Matrix bilinearTmp
 		{
 			for(int i=0; i < bilinearTmp.width; i++)
 			{
-				bilinearTmp.array[j*bilinearTmp.height+i] = convertToGreyscale(bilinearTmp.array[j*bilinearTmp.height+i],maxValue);
+				bilinearTmp.array[j*bilinearTmp.width+i] = convertToGreyscale(bilinearTmp.array[j*bilinearTmp.width+i],maxValue);
 			}
 		}
 
@@ -45,7 +45,7 @@ volatile void drawColorBilinear( const struct Matrix src,struct Matrix bilinearT
 		{
 			for(int i=0; i < bilinearTmp.width; i++)
 			{
-				bilinearTmp.array[j*bilinearTmp.height+i] = convertToColor(bilinearTmp.array[j*bilinearTmp.height+i],maxValue);
+				bilinearTmp.array[j*bilinearTmp.width+i] = convertToColor(bilinearTmp.array[j*bilinearTmp.width+i],maxValue);
 			}
 		}
 

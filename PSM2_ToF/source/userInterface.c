@@ -52,7 +52,7 @@ uint8_t updateValue(const uint8_t mode, int8_t * const changeDirection,int16_t *
 
 uint8_t displayInterface(char* const buff,const char* const colorModeName, const uint16_t minValue, const uint16_t maxValue, const uint8_t valueJump, const uint8_t mode) {
 
-	sprintf(buff, "        SETTINGS    ");
+	sprintf(buff, "       SETTINGS    ");
 	LCD_Puts(10,5, buff, 0xffff);
 	LCD_Draw_Line(10, 18, LCD_WIDTH - 10, 18, 0xffff);
 	LCD_Puts(10,25,colorModeName,0xffff);
