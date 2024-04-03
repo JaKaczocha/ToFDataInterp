@@ -4,64 +4,244 @@
 
 #include "lcd.h"
 
+struct Settings {
+	int16_t settingCounter; // pref const
+	int16_t colorModeCounter; // pref const
+	int16_t colorMode;
+	uint16_t minValue;
+	uint16_t maxValue;
+};
 
-uint8_t updateMode(uint8_t * const mode, bool* const nextMode, const uint16_t modeCounter) {
-    *mode += *nextMode;
-    *nextMode = 0;
-    if(*mode >= modeCounter) {
-        *mode = 0;
-    }
-}
+void interfaceActivity(volatile struct Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation ) {
+	while(1) {
 
-uint8_t updateValue(const uint8_t mode, int8_t * const changeDirection,int16_t * const colorMode,uint16_t * 
-    const minValue, uint16_t * const maxValue, uint8_t * const valueJump, const uint16_t colorModeCounter, const uint16_t modeCounter) {
-	if(mode == 0) {
-		*changeDirection = 0;
-		return 0;
+		switch(*rotation) {
+		case 0: // colorMode
+			if(*clicked == 2) {
+
+				updateColorMode(settings, clicked, rotation);
+				*clicked = 1;
+			}
+			break;
+		case 1: // minValue
+			if(*clicked == 2) {
+
+				updateMinValue(settings, clicked, rotation);
+				*clicked = 1;
+			}
+			break;
+		case 2: // maxValue
+			if(*clicked == 2) {
+
+				updateMaxValue(settings, clicked, rotation);
+				*clicked = 1;
+			}
+			break;
+		case 3: // return
+			if(*clicked == 2) {
+
+				*clicked = 0;
+				return;
+			}
+			break;
+
+		}
+		if(*rotation < 0) {
+			*rotation = settings->settingCounter - 1;
+		}
+		*rotation = *rotation % settings->settingCounter;
+		displaySettings(settings,*rotation,-1,-1,false);
 	}
 
-    if(changeDirection) {
-        switch(mode) {
-            case 1: //draw option
-                *colorMode += *changeDirection;
-                if(*colorMode < 0) {
-                   *colorMode = colorModeCounter - 1;
-                } else if ( *colorMode >= colorModeCounter) {
-                    *colorMode = 0;
-                }
-                break;
-            case 2: //min value option ..
-                *minValue += (*changeDirection) * (*valueJump);
-                if(*minValue >= *maxValue) {
-                    *minValue = 1;
-                }
-                break;
-            case 3: // max value option
-                *maxValue += (*changeDirection) * (*valueJump);
-                if(*maxValue > 4000 || *maxValue <= *minValue) {
-                    *maxValue = 4000;
-                }
-                break;
-            case 4: // value jump option
-                *valueJump += *changeDirection;
-                break;
-        }
-        *changeDirection = 0;
-    }
 }
 
-uint8_t displayInterface(char* const buff,const char* const colorModeName, const uint16_t minValue, const uint16_t maxValue, const uint8_t valueJump, const uint8_t mode) {
+void updateMaxValue(volatile struct  Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation) {
+	int16_t rotationTmp = *rotation;
+	uint16_t clickedTmp = *clicked;
 
-	sprintf(buff, "       SETTINGS    ");
-	LCD_Puts(10,5, buff, 0xffff);
-	LCD_Draw_Line(10, 18, LCD_WIDTH - 10, 18, 0xffff);
-	LCD_Puts(10,25,colorModeName,0xffff);
-    sprintf(buff, "minDistance:  %05d", minValue);
-    LCD_Puts(10,45,buff,0xffff);
-    sprintf(buff, "maxDistance:  %05d", maxValue);
-    LCD_Puts(10,65,buff,0xffff);
-    sprintf(buff, "valueJump:     %03d", valueJump);
-    LCD_Puts(10,85,buff,0xffff);
-    sprintf(buff, ">");
-    LCD_Puts(1, 25 + 20*(mode-1), buff,0xffff);
+	*clicked = 0;
+	*rotation = 0;
+
+	while(true) { // TODO algorithm
+		switch(*clicked) {
+		case 0: //1000
+			if(*rotation > 0) {
+				settings->maxValue = settings->maxValue + 1000 <= 4000 ? settings->maxValue + 1000 : settings->maxValue;
+			}
+			else if( *rotation < 0) {
+				settings->maxValue = settings->maxValue - 1000 > settings->minValue ? settings->maxValue - 1000 : settings->maxValue;
+			}
+			break;
+		case 1: //0100
+			if(*rotation > 0) {
+				settings->maxValue = settings->maxValue + 100 <= 4000 ? settings->maxValue + 100 : settings->maxValue;
+			}
+			else if( *rotation < 0) {
+				settings->maxValue = settings->maxValue - 100 > settings->minValue ? settings->maxValue - 100 : settings->maxValue;
+			}
+			break;
+		case 2: //0010
+			if(*rotation > 0) {
+				settings->maxValue = settings->maxValue + 10 <= 4000 ? settings->maxValue + 10 : settings->maxValue;
+			}
+			else if( *rotation < 0) {
+				settings->maxValue = settings->maxValue - 10 > settings->minValue ? settings->maxValue - 10 : settings->maxValue;
+			}
+			break;
+		case 3: //0001
+			if(*rotation > 0) {
+				settings->maxValue = settings->maxValue + 1 <= 4000 ? settings->maxValue + 1 : settings->maxValue;
+			}
+			else if( *rotation < 0) {
+				settings->maxValue = settings->maxValue - 1 > settings->minValue ? settings->maxValue - 1 : settings->maxValue;
+			}
+			break;
+		case 4:
+			*rotation = rotationTmp;
+			*clicked = clickedTmp;
+			return;
+		}
+		*rotation = 0;
+		displaySettings(settings,rotationTmp,-1,*clicked,true);
+	}
+}
+
+void updateMinValue(volatile struct Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation) {
+	int16_t rotationTmp = *rotation;
+	uint16_t clickedTmp = *clicked;
+
+	*clicked = 0;
+	*rotation = 0;
+
+	while(true) { // TODO algorithm
+		switch(*clicked) {
+		case 0: //1000
+			if(*rotation > 0) {
+				settings->minValue = settings->minValue + 1000 < settings->maxValue ? settings->minValue + 1000 : settings->minValue;
+			}
+			else if( *rotation < 0) {
+				settings->minValue = settings->minValue - 1000 >= 1 ? settings->minValue - 1000 : settings->minValue;
+			}
+			break;
+		case 1: //0100
+			if(*rotation > 0) {
+				settings->minValue = settings->minValue + 100 < settings->maxValue ? settings->minValue + 100 : settings->minValue;
+			}
+			else if( *rotation < 0) {
+				settings->minValue = settings->minValue - 100 >= 1 ? settings->minValue - 100 : settings->minValue;
+			}
+			break;
+		case 2: //0010
+			if(*rotation > 0) {
+				settings->minValue = settings->minValue + 10 < settings->maxValue ? settings->minValue + 10 : settings->minValue;
+			}
+			else if( *rotation < 0) {
+				settings->minValue = settings->minValue - 10 >= 1 ? settings->minValue - 10 : settings->minValue;
+			}
+			break;
+		case 3: //0001
+			if(*rotation > 0) {
+				settings->minValue = settings->minValue + 1 < settings->maxValue ? settings->minValue + 1 : settings->minValue;
+			}
+			else if( *rotation < 0) {
+				settings->minValue = settings->minValue - 1 >= 1 ? settings->minValue - 1 : settings->minValue;
+			}
+			break;
+		case 4:
+			*rotation = rotationTmp;
+			*clicked = clickedTmp;
+			return;
+		}
+		*rotation = 0;
+		displaySettings(settings,rotationTmp,*clicked,-1,true);
+	}
+}
+
+void updateColorMode(volatile struct Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation) {
+	int16_t rotationTmp = *rotation;
+	uint16_t clickedTmp = *clicked;
+
+	*clicked = 0;
+	*rotation = 0;
+
+
+	while(true) { // TODO algorithm
+		switch(*clicked) {
+		case 0: //1000
+			if(*rotation > 0) {
+				settings->colorMode = (settings->colorMode + 1) % settings->colorModeCounter;
+			}
+			else if(*rotation < 0) {
+				settings->colorMode = (settings->colorMode - 1) > 0 ? settings->colorMode - 1 : settings->colorModeCounter - 1;
+			}
+			*rotation = 0;
+
+			break;
+		case 1:
+			*rotation = rotationTmp;
+			*clicked = clickedTmp;
+			return;
+		}
+		*rotation = 0;
+		displaySettings(settings,rotationTmp,-1,-1,true);
+	}
+}
+
+void displaySettings(volatile struct Settings* const settings, uint8_t choosenSetting, uint8_t updateMin,uint8_t updateMax,bool selected) {
+	char buffor[30];
+	uint16_t color = 0xFFFF;
+
+	LCD_Clear(0x0000);
+	switch(settings->colorMode) {
+	case 0:
+		sprintf(buffor, "  mode: Color Bilinear");
+		break;
+	case 1:
+		sprintf(buffor, "  mode: Grey Bilinear");
+		break;
+	case 2:
+		sprintf(buffor, "  mode: Color Nearest");
+		break;
+	case 3:
+		sprintf(buffor, "  mode: Grey Nearest");
+		break;
+	}
+	if(choosenSetting == 0) {
+		buffor[0] = '>';
+	}
+	LCD_Puts(10, 10, buffor, (choosenSetting == 0 && selected) ? 0xffe0 : color);
+
+	sprintf(buffor, "  min: %04d", settings->minValue);
+	if(choosenSetting == 1) {
+		buffor[0] = '>';
+	}
+	LCD_Puts(10, 30, buffor, (choosenSetting == 1 && selected) ? 0xffe0 : color);
+	if(choosenSetting == 1) {
+		sprintf(buffor, "                "   );
+		buffor[7+updateMin] = '_';
+		LCD_Puts(10, 22, buffor, 0xffff);
+		LCD_Puts(10, 32, buffor, 0xffff);
+	}
+
+
+	sprintf(buffor, "  max: %04d", settings->maxValue);
+	if(choosenSetting == 2) {
+		buffor[0] = '>';
+	}
+	LCD_Puts(10, 50, buffor, (choosenSetting == 2 && selected) ? 0xffe0 : color);
+	if(choosenSetting == 2) {
+			sprintf(buffor, "                "   );
+			buffor[7+updateMax] = '_';
+			LCD_Puts(10, 42, buffor, 0xffff);
+			LCD_Puts(10, 52, buffor, 0xffff);
+	}
+
+
+	sprintf(buffor, "		RETURN		");
+	if(choosenSetting == 3) {
+		buffor[0] = '>';
+	}
+	LCD_Puts(10, 70, buffor, (choosenSetting == 3 && selected) ? 0xffe0 : color);
+
+	LCD_GramRefresh();
 }

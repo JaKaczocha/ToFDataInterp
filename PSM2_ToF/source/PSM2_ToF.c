@@ -23,31 +23,32 @@ struct Matrix {
     uint16_t width;
     uint16_t height;
 };
+struct Settings {
+	int16_t settingCounter; // pref const
+	int16_t colorModeCounter; // pref const
+	int16_t colorMode;
+	uint16_t minValue;
+	uint16_t maxValue;
+};
+
+
+volatile uint16_t clicked = 0;
+volatile int16_t rotation = 0;
+const uint16_t colorModeCounter = 4;
+volatile uint16_t bounce = 0;
+
+uint16_t pixelArr[TOF_WIDTH*TOF_HEIGHT];
+uint16_t  tmpArr[LCD_WIDTH/2*LCD_HEIGHT/2];
+uint16_t  dstArr[LCD_WIDTH*LCD_HEIGHT];
 
 int status;
-const uint16_t colorModeCounter = 4;
-const uint16_t modeCounter = 5;
-uint8_t valueJump;
-int8_t changeDirection = 0;
-uint8_t mode = 0;
-char* buffor[30];
-char* colorModeName[20];
-volatile bool nextMode = 0;
-uint16_t pixelArr[64];
-
-uint16_t  tmpArr[80*64];
-uint16_t  dstArr[LCD_WIDTH*LCD_HEIGHT];
-uint16_t minValue = 1, maxValue = 4000;
-
 volatile int IntCount;
 uint8_t p_data_ready;
 VL53L5CX_Configuration 	Dev;
 VL53L5CX_ResultsData 	Results;
 uint8_t resolution, isAlive;
-volatile int16_t colorMode = 0;
-volatile uint16_t bounce = 0;
 
-uint16_t oldVal = 999;
+
 //INTERPOLACJA LINOWA ŻEBY ZWIEKSZYC ROZDZIELCZOSC!!!!!!!!!11!1
 void SysTick_Handler(void)
 {
@@ -80,10 +81,10 @@ void detectedENCA(pint_pin_int_t pintr, uint32_t pmatch_status) {
 	if(!bounce) {
 		bounce = 15;
 		if(!GPIO_PinRead(BOARD_INITENCPINS_SIB_GPIO, BOARD_INITENCPINS_SIB_PORT, BOARD_INITENCPINS_SIB_PIN)) {
-			++changeDirection;
+			++rotation;
 
 		} else {
-			--changeDirection;
+			--rotation;
 		}
 
 	}
@@ -92,10 +93,11 @@ void detectedENCA(pint_pin_int_t pintr, uint32_t pmatch_status) {
 void detectedSW(pint_pin_int_t pintr, uint32_t pmatch_status) {
 	if(!bounce) {
 		bounce = 15;
-		nextMode = 1;
+		clicked++;
 
 	}
 }
+
 
 int main(void) {
 
@@ -179,39 +181,39 @@ int main(void) {
 	dstMatrix.width = LCD_WIDTH;
 	dstMatrix.height = LCD_HEIGHT;
 
+	struct Settings settings;
+	settings.colorModeCounter = 4;
+	settings.settingCounter = 4;
+	settings.colorMode = 0;
+	settings.minValue = 1;
+	settings.maxValue = 4000;
+
 	LCD_Clear(0xffffff);
 	LCD_Puts(10, 30, "before loop...", 0x0000);
 	while(1) {
-		switch(colorMode)
-		{
-		case 0:
-			strcpy(colorModeName, "bilinear RB");
-			drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
-		case 1:
-			strcpy(colorModeName, "bilinear grey");
-			drawGreyBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
-		case 2:
-			strcpy(colorModeName, "nearest RB");
-			drawColorNearest(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
-		case 3:
-			strcpy(colorModeName, "nearest grey");
-			drawGreyNearest(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
-		default:
-			strcpy(colorModeName, "bilinear RB");
-			drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
+		if(!clicked) {
+			rotation = 0;
+			switch(settings.colorMode)
+					{
+					case 0:
+						drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 1:
+						drawGreyBilinear(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 2:
+						drawColorNearest(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 3:
+						drawGreyNearest(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					default:
+						drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					}
+		} else {
+			interfaceActivity(&settings,&clicked, &rotation );
 		}
-
-		updateMode(&mode, &nextMode, modeCounter);
-		updateValue(mode, &changeDirection,&colorMode,&minValue, &maxValue, &valueJump,colorModeCounter, modeCounter);
-		if(mode) {
-			displayInterface(buffor,colorModeName, minValue, maxValue, valueJump,mode);
-		}
-
 		
 
 		LCD_GramRefresh();
