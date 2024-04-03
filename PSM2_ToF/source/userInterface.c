@@ -205,6 +205,11 @@ void displaySettings(volatile struct Settings* const settings, uint8_t choosenSe
 	case 3:
 		sprintf(buffor, "  mode: Grey Nearest");
 		break;
+	case 4:
+		sprintf(buffor, "  mode: Color Bicubic");
+		break;
+	case 5:
+		sprintf(buffor, "  mode: Grey Bicubic");
 	}
 	if(choosenSetting == 0) {
 		buffor[0] = '>';

@@ -34,7 +34,6 @@ struct Settings {
 
 volatile uint16_t clicked = 0;
 volatile int16_t rotation = 0;
-const uint16_t colorModeCounter = 4;
 volatile uint16_t bounce = 0;
 
 uint16_t pixelArr[TOF_WIDTH*TOF_HEIGHT];
@@ -182,14 +181,17 @@ int main(void) {
 	dstMatrix.height = LCD_HEIGHT;
 
 	struct Settings settings;
-	settings.colorModeCounter = 4;
+	settings.colorModeCounter = 6;
 	settings.settingCounter = 4;
-	settings.colorMode = 0;
+	settings.colorMode = 5;
 	settings.minValue = 1;
 	settings.maxValue = 4000;
 
 	LCD_Clear(0xffffff);
 	LCD_Puts(10, 30, "before loop...", 0x0000);
+
+
+
 	while(1) {
 		if(!clicked) {
 			rotation = 0;
@@ -206,6 +208,12 @@ int main(void) {
 						break;
 					case 3:
 						drawGreyNearest(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 4:
+						drawColorBicubic(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 5:
+						drawGreyBicubic(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
 						break;
 					default:
 						drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);

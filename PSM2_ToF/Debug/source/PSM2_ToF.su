@@ -7,4 +7,4 @@ C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\drivers/fsl_gpio.h:172:24:GPIO_PinR
 ../source/PSM2_ToF.c:62:6:cbToF_Ready	24	static
 ../source/PSM2_ToF.c:79:6:detectedENCA	16	static
 ../source/PSM2_ToF.c:92:6:detectedSW	16	static
-../source/PSM2_ToF.c:100:5:main	48	static
+../source/PSM2_ToF.c:101:5:main	64	static

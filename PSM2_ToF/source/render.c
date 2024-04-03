@@ -8,6 +8,21 @@ struct Matrix {
     uint16_t height;
 };
 
+volatile void drawGreyBicubic(const struct Matrix src, struct Matrix bicubicTmp,struct  Matrix dst,const uint16_t minValue,const  uint16_t maxValue) {
+	bicubic(bicubicTmp.array, bicubicTmp.width, bicubicTmp.height, src.array, src.width, src.height);
+
+	for(int j=0; j<bicubicTmp.height; j++)
+	{
+		for(int i=0; i < bicubicTmp.width; i++)
+		{
+			bicubicTmp.array[j*bicubicTmp.width+i] = convertToGreyscale(bicubicTmp.array[j*bicubicTmp.width+i],maxValue);
+		}
+	}
+
+	nearestNeighbor(dst.array, dst.width, dst.height, bicubicTmp.array, bicubicTmp.width,bicubicTmp.height);
+	LCD_Set_Icon(0, 0, dst.width, dst.height, dst.array);
+}
+
 volatile void drawGreyBilinear(const struct Matrix src,struct Matrix bilinearTmp, struct Matrix dst,const uint16_t minValue,const  uint16_t maxValue)
 {
 	bilinear(bilinearTmp.array, bilinearTmp.width, bilinearTmp.height, src.array, src.width, src.height);
@@ -34,6 +49,22 @@ volatile void drawGreyNearest(const struct Matrix src, struct Matrix nearestTmp,
 			}
 		}
 	nearestNeighbor(dst.array, dst.width, dst.height, nearestTmp.array, src.width, src.height);
+    LCD_Set_Icon(0, 0, dst.width, dst.height, dst.array);
+}
+
+volatile void drawColorBicubic( const struct Matrix src,struct Matrix bicubicTmp, struct Matrix dst,const uint16_t minValue, const uint16_t maxValue)
+{
+	bicubic(bicubicTmp.array, bicubicTmp.width, bicubicTmp.height, src.array, src.width, src.height);
+
+	for(int j=0; j<bicubicTmp.height; j++)
+		{
+			for(int i=0; i < bicubicTmp.width; i++)
+			{
+				bicubicTmp.array[j*bicubicTmp.width+i] = convertToColor(bicubicTmp.array[j*bicubicTmp.width+i],maxValue);
+			}
+		}
+
+	nearestNeighbor(dst.array, dst.width, dst.height, bicubicTmp.array, bicubicTmp.width, bicubicTmp.height);
     LCD_Set_Icon(0, 0, dst.width, dst.height, dst.array);
 }
 
