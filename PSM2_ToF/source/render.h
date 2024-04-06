@@ -15,6 +15,7 @@ volatile void drawColorNearest(const struct Matrix src, struct Matrix nearestTmp
 
 volatile void drawColorBicubic(const struct Matrix src, struct Matrix bicubicTmp,struct  Matrix dst,const uint16_t minValue,const  uint16_t maxValue);
 
+
 #endif /* RENDER_H_ */
 
 

@@ -229,7 +229,7 @@ called_from_default_init: true
 outputs:
 - {id: FXCOM3_clock.outFreq, value: 30 MHz}
 - {id: FXCOM4_clock.outFreq, value: 12 MHz}
-- {id: System_clock.outFreq, value: 150 MHz}
+- {id: System_clock.outFreq, value: 150 MHz, locked: true, accuracy: '0.001'}
 settings:
 - {id: PLL0_Mode, value: Normal}
 - {id: ENABLE_CLKIN_ENA, value: Enabled}

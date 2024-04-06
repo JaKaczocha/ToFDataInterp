@@ -907,7 +907,7 @@
                <clock_outputs>
                   <clock_output id="FXCOM3_clock.outFreq" value="30 MHz" locked="false" accuracy=""/>
                   <clock_output id="FXCOM4_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
-                  <clock_output id="System_clock.outFreq" value="150 MHz" locked="false" accuracy=""/>
+                  <clock_output id="System_clock.outFreq" value="150 MHz" locked="true" accuracy="0.001"/>
                </clock_outputs>
                <clock_settings>
                   <setting id="PLL0_Mode" value="Normal" locked="false"/>
