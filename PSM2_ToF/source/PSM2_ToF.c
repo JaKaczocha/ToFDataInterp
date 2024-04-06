@@ -13,6 +13,7 @@
 #include "colorConverter.h"
 #include "interpolation.h"
 #include "render.h"
+#include "userInterface.h"
 
 #define TOF_WIDTH 8
 #define TOF_HEIGHT 8
@@ -22,30 +23,31 @@ struct Matrix {
     uint16_t width;
     uint16_t height;
 };
+struct Settings {
+	int16_t settingCounter; // pref const
+	int16_t colorModeCounter; // pref const
+	int16_t colorMode;
+	uint16_t minValue;
+	uint16_t maxValue;
+};
+
+
+volatile uint16_t clicked = 0;
+volatile int16_t rotation = 0;
+volatile uint16_t bounce = 0;
+
+uint16_t pixelArr[TOF_WIDTH*TOF_HEIGHT];
+uint16_t  tmpArr[LCD_WIDTH/2*LCD_HEIGHT/2];
+uint16_t  dstArr[LCD_WIDTH*LCD_HEIGHT];
 
 int status;
-const uint16_t colorModeCounter = 4;
-const uint16_t modeCounter = 4;
-uint8_t valueJump;
-int8_t changeDirection = 0;
-uint8_t mode = 0;
-
-volatile bool nextMode = 0;
-uint16_t pixelArr[64];
-
-uint16_t  interpArr[64*64];
-uint16_t  interpArr128[128*128];
-uint16_t minValue = 1, maxValue = 4000;
-
 volatile int IntCount;
 uint8_t p_data_ready;
 VL53L5CX_Configuration 	Dev;
 VL53L5CX_ResultsData 	Results;
 uint8_t resolution, isAlive;
-volatile int16_t colorMode = 0;
-volatile uint16_t bounce = 0;
 
-uint16_t oldVal = 999;
+
 //INTERPOLACJA LINOWA ŻEBY ZWIEKSZYC ROZDZIELCZOSC!!!!!!!!!11!1
 void SysTick_Handler(void)
 {
@@ -78,10 +80,10 @@ void detectedENCA(pint_pin_int_t pintr, uint32_t pmatch_status) {
 	if(!bounce) {
 		bounce = 15;
 		if(!GPIO_PinRead(BOARD_INITENCPINS_SIB_GPIO, BOARD_INITENCPINS_SIB_PORT, BOARD_INITENCPINS_SIB_PIN)) {
-			++changeDirection;
+			++rotation;
 
 		} else {
-			--changeDirection;
+			--rotation;
 		}
 
 	}
@@ -90,10 +92,11 @@ void detectedENCA(pint_pin_int_t pintr, uint32_t pmatch_status) {
 void detectedSW(pint_pin_int_t pintr, uint32_t pmatch_status) {
 	if(!bounce) {
 		bounce = 15;
-		nextMode = 1;
+		clicked++;
 
 	}
 }
+
 
 int main(void) {
 
@@ -169,69 +172,57 @@ int main(void) {
 	srcMatrix.height = TOF_HEIGHT;
 	struct Matrix tmpMatrix;
 
-	tmpMatrix.array = interpArr;
-	tmpMatrix.width = 64;
-	tmpMatrix.height = 64;
+	tmpMatrix.array = tmpArr;
+	tmpMatrix.width = LCD_WIDTH/2;
+	tmpMatrix.height = LCD_HEIGHT/2;
 	struct Matrix dstMatrix;
-	dstMatrix.array = interpArr128;
-	dstMatrix.width = 128;
-	dstMatrix.height = 128;
+	dstMatrix.array = dstArr;
+	dstMatrix.width = LCD_WIDTH;
+	dstMatrix.height = LCD_HEIGHT;
+
+	struct Settings settings;
+	settings.colorModeCounter = 6;
+	settings.settingCounter = 4;
+	settings.colorMode = 5;
+	settings.minValue = 1;
+	settings.maxValue = 4000;
 
 	LCD_Clear(0xffffff);
 	LCD_Puts(10, 30, "before loop...", 0x0000);
-	while(1) {
-		switch(colorMode)
-		{
-		case 0:
-			drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
-		case 1:
-			drawGreyBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
-		case 2:
-			drawColorNearest(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
-		case 3:
-			drawGreyNearest(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
-		default:
-			drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,minValue,maxValue);
-			break;
-		}
 
-		mode += nextMode;
-		nextMode = 0;
-		if(mode >= modeCounter) {
-			mode = 0;
+
+
+	while(1) {
+		if(!clicked) {
+			rotation = 0;
+			switch(settings.colorMode)
+					{
+					case 0:
+						drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 1:
+						drawGreyBilinear(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 2:
+						drawColorNearest(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 3:
+						drawGreyNearest(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 4:
+						drawColorBicubic(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					case 5:
+						drawGreyBicubic(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					default:
+						drawColorBilinear(srcMatrix,tmpMatrix,dstMatrix,settings.minValue,settings.maxValue);
+						break;
+					}
+		} else {
+			interfaceActivity(&settings,&clicked, &rotation );
 		}
-		if(changeDirection) {
-			switch(mode) {
-				case 0: //draw option
-					colorMode += changeDirection;
-					if(colorMode < 0) {
-						colorMode = colorModeCounter - 1;
-					} else if ( colorMode >= colorModeCounter) {
-						colorMode = 0;
-					}
-					break;
-				case 1: //min value option ..
-					minValue += changeDirection * valueJump;
-					if(minValue >= maxValue) {
-						minValue = 1;
-					}
-					break;
-				case 2: // max value option
-					maxValue += changeDirection * valueJump;
-					if(maxValue > 4000 || maxValue <= minValue) {
-						maxValue = 4000;
-					}
-					break;
-				case 3: // value jump option
-					valueJump += changeDirection;
-					break;
-			}
-			changeDirection = 0;
-		}
+		
 
 		LCD_GramRefresh();
 	}
