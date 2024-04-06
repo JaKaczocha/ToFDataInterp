@@ -21,7 +21,7 @@ volatile void drawGreyBicubic(const struct Matrix src, struct Matrix bicubicTmp,
 	{
 		for(int i=0; i < bicubicTmp.width; i++)
 		{
-			bicubicTmp.array[j*bicubicTmp.width+i] = convertToGreyscale(bicubicTmp.array[j*bicubicTmp.width+i],maxValue);
+			bicubicTmp.array[j*bicubicTmp.width+i] = convertToGreyscale(bicubicTmp.array[j*bicubicTmp.width+i],minValue, maxValue);
 		}
 	}
 
@@ -40,7 +40,7 @@ volatile void drawGreyBilinear(const struct Matrix src,struct Matrix bilinearTmp
 		{
 			for(int i=0; i < bilinearTmp.width; i++)
 			{
-				bilinearTmp.array[j*bilinearTmp.width+i] = convertToGreyscale(bilinearTmp.array[j*bilinearTmp.width+i],maxValue);
+				bilinearTmp.array[j*bilinearTmp.width+i] = convertToGreyscale(bilinearTmp.array[j*bilinearTmp.width+i],minValue, maxValue);
 			}
 		}
 
@@ -57,7 +57,7 @@ volatile void drawGreyNearest(const struct Matrix src, struct Matrix nearestTmp,
 		{
 			for(int i=0; i<src.width; i++)
 			{
-				nearestTmp.array[j*src.height+i] = convertToGreyscale(srcCpy[j*src.height+i],maxValue);
+				nearestTmp.array[j*src.height+i] = convertToGreyscale(srcCpy[j*src.height+i],minValue, maxValue);
 			}
 		}
 	nearestNeighbor(dst.array, dst.width, dst.height, nearestTmp.array, src.width, src.height);
@@ -75,7 +75,7 @@ volatile void drawColorBicubic( const struct Matrix src,struct Matrix bicubicTmp
 		{
 			for(int i=0; i < bicubicTmp.width; i++)
 			{
-				bicubicTmp.array[j*bicubicTmp.width+i] = convertToColor(bicubicTmp.array[j*bicubicTmp.width+i],maxValue);
+				bicubicTmp.array[j*bicubicTmp.width+i] = convertToColorRGB(bicubicTmp.array[j*bicubicTmp.width+i],minValue, maxValue);
 			}
 		}
 
@@ -94,7 +94,7 @@ volatile void drawColorBilinear( const struct Matrix src,struct Matrix bilinearT
 		{
 			for(int i=0; i < bilinearTmp.width; i++)
 			{
-				bilinearTmp.array[j*bilinearTmp.width+i] = convertToColor(bilinearTmp.array[j*bilinearTmp.width+i],maxValue);
+				bilinearTmp.array[j*bilinearTmp.width+i] = convertToColorRGB(bilinearTmp.array[j*bilinearTmp.width+i],minValue,maxValue);
 			}
 		}
 
@@ -111,7 +111,7 @@ volatile void drawColorNearest(const struct Matrix src, struct Matrix nearestTmp
 		{
 			for(int i=0; i<src.width; i++)
 			{
-				nearestTmp.array[j*src.height+i] = convertToColor(srcCpy[j*src.height+i],maxValue);
+				nearestTmp.array[j*src.height+i] = convertToColorRGB(srcCpy[j*src.height+i],minValue, maxValue);
 			}
 		}
 	nearestNeighbor(dst.array, dst.width, dst.height, nearestTmp.array,src.width, src.height);
