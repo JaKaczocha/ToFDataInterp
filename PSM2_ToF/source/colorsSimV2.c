@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <stdbool.h>
-
+/*
 #define CLAMP(x, low, high) ((x) > (high) ? (high) : ((x) < (low) ? (low) : (x)))
 
 #define OBJECT_THRESHOLD 600
@@ -167,7 +167,7 @@ int main() {
         { 0, 1000, 1000, 1000, 1000, 1000, 1000, 0, },
         { 0, 0, 0, 0, 0, 0, 0, 0, }
     };*/
-
+/*
     uint16_t pixelMatrix[8][8] = {
         { 3000, 3000, 3000, 3000, 3000, 3000, 3000, 3000, },
         { 3000, 3000, 3000, 3000, 3000, 3000, 3000, 3000, },
@@ -203,3 +203,4 @@ for(int k = 0; k < 1; k++) {
 
     return 0;
 }
+*/

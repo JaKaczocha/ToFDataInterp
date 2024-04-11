@@ -34,7 +34,7 @@ void detectAndColorObjects(uint16_t matrix[8][8]) {
         }
     }
 }
-
+/*
 int main() {
     uint16_t pixelMatrix[8][8] = {
         { 2123, 2200, 4000, 4000, 4000, 4000, 4000, 4000 },
@@ -57,4 +57,4 @@ int main() {
     }
 
     return 0;
-}
+}*/

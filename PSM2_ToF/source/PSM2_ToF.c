@@ -152,7 +152,7 @@ int main(void) {
 	PRINTF("Sensor initializing, please wait few seconds...\r\n");
 	status = vl53l5cx_init(&Dev);
 	status = vl53l5cx_set_resolution(&Dev, VL53L5CX_RESOLUTION_8X8);
-	status = vl53l5cx_set_ranging_frequency_hz(&Dev, 60);
+	status = vl53l5cx_set_ranging_frequency_hz(&Dev, 15);
 	LCD_Clear(0xffffff);
 	LCD_Puts(10, 30, "Status...", 0x0000);
 	PRINTF("Status %d\r\n", status);
