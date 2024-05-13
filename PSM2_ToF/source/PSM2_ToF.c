@@ -30,15 +30,19 @@ struct Settings {
 	uint16_t minValue;
 	uint16_t maxValue;
 	uint8_t freq;
+	uint8_t sharpness;
 };
 
-uint16_t oldFreqValue = 0;
+uint8_t oldFreqValue = 0;
+uint8_t oldSharpValue = 0;
 volatile uint16_t clicked = 0;
 volatile int16_t rotation = 0;
 volatile uint16_t bounce = 0;
 
-uint8_t testHardFreq = 0;
-uint8_t testSoftFreq = 0;
+uint8_t HardFreq = 0;
+uint8_t SoftFreq = 0;
+uint8_t HardSharp = 0;
+uint8_t SoftSharp = 0;
 uint8_t statusSet = 111, statusSetFirst = 111;
 uint8_t statusGet = 111;
 char buffor[30];
@@ -121,11 +125,12 @@ int main(void) {
 	PRINTF("Run\n\r");
 	struct Settings settings;
 	settings.colorModeCounter = 6;
-	settings.settingCounter = 5;
+	settings.settingCounter = 6;
 	settings.colorMode = 3;
 	settings.minValue = 1;
 	settings.maxValue = 4000;
 	settings.freq = 1;
+	settings.sharpness = 5;
 
 
 	Dev.platform.i2c = FLEXCOMM4_PERIPHERAL;
@@ -235,23 +240,34 @@ int main(void) {
 		} else {
 
 			interfaceActivity(&settings,&clicked, &rotation, &Dev );
+
 			if(oldFreqValue != settings.freq) {
-				while(settings.freq != testHardFreq)
+				while(settings.freq != HardFreq)
 				{
 					statusSet = vl53l5cx_set_ranging_frequency_hz(&Dev, settings.freq);
-					statusGet = vl53l5cx_get_ranging_frequency_hz(&Dev, &testHardFreq);
-					oldFreqValue = testHardFreq;
-					delay_ms(20);
-					vl53l5cx_set_ranging_frequency_hz(&Dev, testHardFreq);
+					statusGet = vl53l5cx_get_ranging_frequency_hz(&Dev, &HardFreq);
+					oldFreqValue = HardFreq;
+					vl53l5cx_set_ranging_frequency_hz(&Dev, HardFreq);
 					vl53l5cx_start_ranging(&Dev);
 				}
-
 			}
 
-
+			if(oldSharpValue != settings.sharpness) {
+				vl53l5cx_set_sharpener_percent(&Dev, settings.sharpness);
+				vl53l5cx_get_sharpener_percent(&Dev, &HardSharp);
+				oldSharpValue = HardSharp;
+				vl53l5cx_set_sharpener_percent(&Dev, HardSharp);
+			}
 		}
 
-		sprintf(buffor, "  Soft: %04d", settings.freq);
+		/*sprintf(buffor, "  Soft: %04d", settings.sharpness);
+		LCD_Puts(10, 10, buffor, color);
+		sprintf(buffor, "  Hard: %04d", HardSharp);
+		LCD_Puts(10, 30, buffor, color);
+		//sprintf(buffor, "  StatusSetFirst: %04d",statusSetFirst);
+		//LCD_Puts(10, 90, buffor, color);*/
+
+		/*sprintf(buffor, "  Soft: %04d", settings.freq);
 		LCD_Puts(10, 10, buffor, color);
 		sprintf(buffor, "  Hard: %04d", testHardFreq);
 		LCD_Puts(10, 30, buffor, color);
@@ -260,7 +276,7 @@ int main(void) {
 		sprintf(buffor, "  StatusSet: %04d", statusSet);
 		LCD_Puts(10, 70, buffor, color);
 		//sprintf(buffor, "  StatusSetFirst: %04d",statusSetFirst);
-		//LCD_Puts(10, 90, buffor, color);
+		//LCD_Puts(10, 90, buffor, color);*/
 		
 
 		LCD_GramRefresh();

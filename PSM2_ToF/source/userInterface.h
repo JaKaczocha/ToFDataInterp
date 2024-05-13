@@ -9,4 +9,5 @@ void updateMaxValue(volatile struct Settings* const settings,volatile uint16_t* 
 void updateMinValue(volatile struct Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation);
 void updateColorMode(volatile struct Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation);
 void updateFreq(volatile struct  Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation);
+void updateSharpness(volatile struct  Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation);
 void displaySettings(volatile struct Settings* const settings, uint8_t choosenSetting, uint8_t updateMin,uint8_t updateMax,bool selected);
