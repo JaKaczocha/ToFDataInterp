@@ -3,8 +3,16 @@ Student project that leverages the VL53L5CX Time of Flight (ToF) sensor in conju
 
 ## How To Use
 
+To ensure successful execution of the application, the following prerequisites must be met:
+
+* NPX microcontroller for running the application
+* Proper pin configuration
+* Time-of-Flight (ToF) sensor
+* LCD screen
+* Incremental encoder
+
 > [!IMPORTANT]
-> You need to properly plug pins with project configuration for ToF, LCD and encoder to properly launch application.
+> Ensure that the pins are correctly connected according to the project configuration for ToF, LCD, and the encoder in order to successfully launch the application. [LPC55S69 Pin config](./Expansion%20Connectors.pdf)
 
 After the build process is complete, proceed to install the application on your microcontroller. The sensor will undergo a brief initialization process, after which it should promptly display a live image on the LCD screen. Note that the sensor is capable of reading data solely in the form of an 8x8 pixel matrix.
 
@@ -51,33 +59,26 @@ Values that can be modified:
   <img src="./imgs/menu2.gif" alt="menu" width="50%" height="50%">
 </p>
 
-### ToF Limitations
+## ToF Limitations
 
-* **Pixel Refreshment Distance Constraint** - At larger distances, the sensor may encounter pixel refreshment issues, where some pixels may not update in real-time with the rest.
+> [!CAUTION]
+> **Pixel Refreshment Distance Constraint** - At larger distances, the sensor may encounter pixel refreshment issues, where some pixels may not update in real-time with the rest.
 
-* **Ambient Light Sensitivity** - Ambient light can affect the sensor's performance, especially in outdoor environments or brightly lit indoor settings. While the sensor incorporates measures to mitigate ambient light interference, extreme lighting conditions may still pose challenges.
+> [!WARNING]
+> **Ambient Light Sensitivity** - Ambient light can affect the sensor's performance, especially in outdoor environments or brightly lit indoor settings. While the sensor incorporates measures to mitigate ambient light interference, extreme lighting conditions may still pose challenges.
 
-* **Surface Reflectivity** - Highly reflective surfaces, such as mirrors or polished metals, may cause inaccuracies in distance measurements due to the sensor's reliance on Time-of-Flight principles.
+> [!WARNING]
+> **Surface Reflectivity** - Highly reflective surfaces, such as mirrors or polished metals, may cause inaccuracies in distance measurements due to the sensor's reliance on Time-of-Flight principles.
 
 User manual: [VL53L5CX](https://www.st.com/resource/en/user_manual/um2884-a-guide-to-using-the-vl53l5cx-multizone-timeofflight-ranging-sensor-with-a-wide-field-of-view-ultra-lite-driver-uld-stmicroelectronics.pdf)
-
-### Prerequisites
-
-To ensure successful execution of the application, the following prerequisites must be met:
-
-* NPX microcontroller for running the application
-* Proper pin configuration
-* Time-of-Flight (ToF) sensor
-* LCD screen
-* Incremental encoder
 
 ## Built With
 
 * [MCUXpresso IDE](https://www.nxp.com/design/software/development-software/mcuxpresso-software-and-tools-/mcuxpresso-integrated-development-environment-ide:MCUXpresso-IDE)
 * [LPC55S69](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/general-purpose-mcus/lpc5500-cortex-m33/high-efficiency-arm-cortex-m33-based-microcontroller-family:LPC55S6x)
 * [VL53L5CX](https://www.st.com/en/imaging-and-photonics-solutions/vl53l5cx.html)
-* [Waveshare 13892]()
-* [Enkoder]()
+* [Waveshare 13892](https://botland.com.pl/wyswietlacze-lcd-tft-i-ips/10754-wyswietlacz-lcd-tft-kolorowy-18-128x160px-spi-waveshare-13892-5904422316600.html?cd=18298825651&ad=&kd=&gad_source=1&gclid=CjwKCAjw9IayBhBJEiwAVuc3fnzV9Mri-7Q6pY6htQ_bz5D1_3QTthhOibBEx9GWr2F2xUjPhQBVYxoC690QAvD_BwE)
+* [Waveshare 9533](https://botland.com.pl/enkodery/4483-czujnik-obrotu-impulsator-enkoder-z-przyciskiem-modul-waveshare-9533-5904422366582.html?cd=20567593583&ad=&kd=&gad_source=1&gclid=CjwKCAjw9IayBhBJEiwAVuc3foN_4__QTdndCYP2mnJhBEWZfnRVu7XHFbJqB0fvRTm9RE0dJ6yIXBoCqvAQAvD_BwE)
 
 ## License
 
