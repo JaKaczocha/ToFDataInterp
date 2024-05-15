@@ -29,12 +29,25 @@ struct Settings {
 	int16_t colorMode;
 	uint16_t minValue;
 	uint16_t maxValue;
+	uint8_t freq;
+	uint8_t sharpness;
 };
 
-
+uint8_t oldFreqValue = 0;
+uint8_t oldSharpValue = 0;
 volatile uint16_t clicked = 0;
 volatile int16_t rotation = 0;
 volatile uint16_t bounce = 0;
+
+uint8_t HardFreq = 0;
+uint8_t SoftFreq = 0;
+uint8_t HardSharp = 0;
+uint8_t SoftSharp = 0;
+uint8_t statusSet = 111, statusSetFirst = 111;
+uint8_t statusGet = 111;
+char buffor[30];
+uint16_t color = 0xFFFF;
+
 
 uint16_t pixelArr[TOF_WIDTH*TOF_HEIGHT];
 uint16_t  tmpArr[LCD_WIDTH/2*LCD_HEIGHT/2];
@@ -110,6 +123,15 @@ int main(void) {
 #endif
 
 	PRINTF("Run\n\r");
+	struct Settings settings;
+	settings.colorModeCounter = 6;
+	settings.settingCounter = 6;
+	settings.colorMode = 3;
+	settings.minValue = 1;
+	settings.maxValue = 4000;
+	settings.freq = 1;
+	settings.sharpness = 5;
+
 
 	Dev.platform.i2c = FLEXCOMM4_PERIPHERAL;
 	Dev.platform.address = 0x29;
@@ -152,11 +174,12 @@ int main(void) {
 	PRINTF("Sensor initializing, please wait few seconds...\r\n");
 	status = vl53l5cx_init(&Dev);
 	status = vl53l5cx_set_resolution(&Dev, VL53L5CX_RESOLUTION_8X8);
-	status = vl53l5cx_set_ranging_frequency_hz(&Dev, 15);
+	status = vl53l5cx_set_ranging_frequency_hz(&Dev, settings.freq);
 	LCD_Clear(0xffffff);
 	LCD_Puts(10, 30, "Status...", 0x0000);
 	PRINTF("Status %d\r\n", status);
 	status = vl53l5cx_set_ranging_mode(&Dev, VL53L5CX_RANGING_MODE_CONTINUOUS);  // Set mode continuous
+	//statusSetFirst = vl53l5cx_set_ranging_mode(&Dev, VL53L5CX_RANGING_MODE_CONTINUOUS);  // Set mode continuous
 	LCD_Clear(0xffffff);
 	LCD_Puts(10, 30, "Ranging starts...", 0x0000);
 	PRINTF("Ranging starts\r\n");
@@ -180,12 +203,7 @@ int main(void) {
 	dstMatrix.width = LCD_WIDTH;
 	dstMatrix.height = LCD_HEIGHT;
 
-	struct Settings settings;
-	settings.colorModeCounter = 6;
-	settings.settingCounter = 4;
-	settings.colorMode = 5;
-	settings.minValue = 1;
-	settings.maxValue = 4000;
+
 
 	LCD_Clear(0xffffff);
 	LCD_Puts(10, 30, "before loop...", 0x0000);
@@ -220,8 +238,45 @@ int main(void) {
 						break;
 					}
 		} else {
-			interfaceActivity(&settings,&clicked, &rotation );
+
+			interfaceActivity(&settings,&clicked, &rotation, &Dev );
+
+			if(oldFreqValue != settings.freq) {
+				while(settings.freq != HardFreq)
+				{
+					statusSet = vl53l5cx_set_ranging_frequency_hz(&Dev, settings.freq);
+					statusGet = vl53l5cx_get_ranging_frequency_hz(&Dev, &HardFreq);
+					oldFreqValue = HardFreq;
+					vl53l5cx_set_ranging_frequency_hz(&Dev, HardFreq);
+					vl53l5cx_start_ranging(&Dev);
+				}
+			}
+
+			if(oldSharpValue != settings.sharpness) {
+				vl53l5cx_set_sharpener_percent(&Dev, settings.sharpness);
+				vl53l5cx_get_sharpener_percent(&Dev, &HardSharp);
+				oldSharpValue = HardSharp;
+				vl53l5cx_set_sharpener_percent(&Dev, HardSharp);
+			}
 		}
+
+		/*sprintf(buffor, "  Soft: %04d", settings.sharpness);
+		LCD_Puts(10, 10, buffor, color);
+		sprintf(buffor, "  Hard: %04d", HardSharp);
+		LCD_Puts(10, 30, buffor, color);
+		//sprintf(buffor, "  StatusSetFirst: %04d",statusSetFirst);
+		//LCD_Puts(10, 90, buffor, color);*/
+
+		/*sprintf(buffor, "  Soft: %04d", settings.freq);
+		LCD_Puts(10, 10, buffor, color);
+		sprintf(buffor, "  Hard: %04d", testHardFreq);
+		LCD_Puts(10, 30, buffor, color);
+		sprintf(buffor, "  StatusGet: %04d", statusGet);
+		LCD_Puts(10, 50, buffor, color);
+		sprintf(buffor, "  StatusSet: %04d", statusSet);
+		LCD_Puts(10, 70, buffor, color);
+		//sprintf(buffor, "  StatusSetFirst: %04d",statusSetFirst);
+		//LCD_Puts(10, 90, buffor, color);*/
 		
 
 		LCD_GramRefresh();

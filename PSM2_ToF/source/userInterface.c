@@ -10,9 +10,11 @@ struct Settings {
 	int16_t colorMode;
 	uint16_t minValue;
 	uint16_t maxValue;
+	uint8_t freq;
+	uint8_t sharpness;
 };
 
-void interfaceActivity(volatile struct Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation ) {
+void interfaceActivity(volatile struct Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation, VL53L5CX_Configuration * const Dev ) {
 	while(1) {
 
 		switch(*rotation) {
@@ -37,7 +39,23 @@ void interfaceActivity(volatile struct Settings* const settings,volatile uint16_
 				*clicked = 1;
 			}
 			break;
-		case 3: // return
+		case 3: // Frequency
+			if(*clicked == 2) {
+
+				updateFreq(settings, clicked, rotation);
+				*clicked = 1;
+			}
+			break;
+
+		case 4: // Frequency
+			if(*clicked == 2) {
+
+				updateSharpness(settings, clicked, rotation);
+				*clicked = 1;
+			}
+			break;
+
+		case 5: // return
 			if(*clicked == 2) {
 
 				*clicked = 0;
@@ -187,9 +205,81 @@ void updateColorMode(volatile struct Settings* const settings,volatile uint16_t*
 	}
 }
 
+void updateFreq(volatile struct  Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation) {
+	int16_t rotationTmp = *rotation;
+	uint16_t clickedTmp = *clicked;
+
+	*clicked = 0;
+	*rotation = 0;
+
+	while(true) { // TODO algorithm
+		switch(*clicked) {
+		case 0: //10
+			if(*rotation > 0) {
+				settings->freq = settings->freq + 10 <= 60 ? settings->freq + 10 : settings->freq;
+			}
+			else if( *rotation < 0) {
+				settings->freq = settings->freq - 10 > 0 ? settings->freq - 10 : settings->freq;
+			}
+			break;
+		case 1: //01
+			if(*rotation > 0) {
+				settings->freq = settings->freq + 1 <= 60 ? settings->freq + 1 : settings->freq;
+			}
+			else if( *rotation < 0) {
+				settings->freq = settings->freq - 1 > 0 ? settings->freq - 1 : settings->freq;
+			}
+			break;
+		case 2:
+			*rotation = rotationTmp;
+			*clicked = clickedTmp;
+			return;
+		}
+		*rotation = 0;
+		displaySettings(settings,rotationTmp,-1,*clicked,true);
+	}
+}
+
+void updateSharpness(volatile struct  Settings* const settings,volatile uint16_t* const clicked,volatile int16_t* const rotation) {
+	int16_t rotationTmp = *rotation;
+	uint16_t clickedTmp = *clicked;
+
+	*clicked = 0;
+	*rotation = 0;
+
+	while(true) { // TODO algorithm
+		switch(*clicked) {
+		case 0: //10
+			if(*rotation > 0) {
+				settings->sharpness = settings->sharpness + 10 <= 99 ? settings->sharpness + 10 : settings->sharpness;
+			}
+			else if( *rotation < 0) {
+				settings->sharpness = settings->sharpness - 10 > 0 ? settings->sharpness - 10 : settings->sharpness;
+			}
+			break;
+		case 1: //01
+			if(*rotation > 0) {
+				settings->sharpness = settings->sharpness + 1 <= 99 ? settings->sharpness + 1 : settings->sharpness;
+			}
+			else if( *rotation < 0) {
+				settings->sharpness = settings->sharpness - 1 >= 0 ? settings->sharpness - 1 : settings->sharpness;
+			}
+			break;
+		case 2:
+			*rotation = rotationTmp;
+			*clicked = clickedTmp;
+			return;
+		}
+		*rotation = 0;
+		displaySettings(settings,rotationTmp,-1,*clicked,true);
+	}
+}
+
+
 void displaySettings(volatile struct Settings* const settings, uint8_t choosenSetting, uint8_t updateMin,uint8_t updateMax,bool selected) {
 	char buffor[30];
 	uint16_t color = 0xFFFF;
+	uint16_t colorReturn = 0x0FFF;
 
 	LCD_Clear(0x0000);
 	switch(settings->colorMode) {
@@ -241,12 +331,35 @@ void displaySettings(volatile struct Settings* const settings, uint8_t choosenSe
 			LCD_Puts(10, 52, buffor, 0xffff);
 	}
 
-
-	sprintf(buffor, "		RETURN		");
+	sprintf(buffor, "  freq: %02d", settings->freq);
 	if(choosenSetting == 3) {
 		buffor[0] = '>';
 	}
 	LCD_Puts(10, 70, buffor, (choosenSetting == 3 && selected) ? 0xffe0 : color);
+	if(choosenSetting == 3) {
+			sprintf(buffor, "                "   );
+			buffor[8+updateMax] = '_';
+			LCD_Puts(10, 62, buffor, 0xffff);
+			LCD_Puts(10, 72, buffor, 0xffff);
+	}
+
+	sprintf(buffor, "  sharpness: %02d", settings->sharpness);
+	if(choosenSetting == 4) {
+		buffor[0] = '>';
+	}
+	LCD_Puts(10, 90, buffor, (choosenSetting == 4 && selected) ? 0xffe0 : color);
+	if(choosenSetting == 4) {
+			sprintf(buffor, "                "   );
+			buffor[13+updateMax] = '_';
+			LCD_Puts(10, 82, buffor, 0xffff);
+			LCD_Puts(10, 92, buffor, 0xffff);
+	}
+
+	sprintf(buffor, "  RETURN  ");
+	if(choosenSetting == 5) {
+		buffor[0] = '>';
+	}
+	LCD_Puts(10, 110, buffor, (choosenSetting == 5 && selected) ? 0xffe0 : colorReturn);
 
 	LCD_GramRefresh();
 }

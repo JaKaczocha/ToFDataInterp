@@ -17,11 +17,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v13.0
+product: Clocks v12.0
 processor: LPC55S69
 package_id: LPC55S69JBD100
 mcu_data: ksdk2_0
-processor_version: 15.0.1
+processor_version: 14.0.0
 board: LPCXpresso55S69
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
@@ -229,7 +229,7 @@ called_from_default_init: true
 outputs:
 - {id: FXCOM3_clock.outFreq, value: 30 MHz}
 - {id: FXCOM4_clock.outFreq, value: 12 MHz}
-- {id: System_clock.outFreq, value: 150 MHz, locked: true, accuracy: '0.001'}
+- {id: System_clock.outFreq, value: 150 MHz}
 settings:
 - {id: PLL0_Mode, value: Normal}
 - {id: ENABLE_CLKIN_ENA, value: Enabled}
