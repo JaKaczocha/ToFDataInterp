@@ -7,20 +7,25 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v15.0
+product: Pins v14.0
 processor: LPC55S69
 package_id: LPC55S69JBD100
 mcu_data: ksdk2_0
-processor_version: 15.0.1
+processor_version: 14.0.0
 board: LPCXpresso55S69
 pin_labels:
 - {pin_num: '81', pin_signal: PIO0_2/FC3_TXD_SCL_MISO_WS/CT_INP1/SCT0_OUT0/SCT_GPI2/SECURE_GPIO0_2, label: 'U6[11]/P20[5]/FC3_SPI_MISO', identifier: LCD_DC}
+- {pin_num: '71', pin_signal: PIO0_13/FC1_CTS_SDA_SSEL0/UTICK_CAP0/CT_INP0/SCT_GPI0/FC1_RXD_SDA_MOSI_DATA/PLU_IN0/SECURE_GPIO0_13, label: 'P19[9]/P19[10]/U2[E6]/P20[8]/FC1_I2C_SDA',
+  identifier: SIA;SIB;SIW}
+- {pin_num: '72', pin_signal: PIO0_14/FC1_RTS_SCL_SSEL1/UTICK_CAP1/CT_INP1/SCT_GPI1/FC1_TXD_SCL_MISO_WS/PLU_IN1/SECURE_GPIO0_14, label: 'P19[11]/P19[12]/U2[D6]/P20[6]/FC1_I2C_SCL',
+  identifier: SW;SIB}
 - {pin_num: '22', pin_signal: PIO0_15/FC6_CTS_SDA_SSEL0/UTICK_CAP2/CT_INP16/SCT0_OUT2/SD0_WR_PRT/SECURE_GPIO0_15/ADC0_2, label: 'P18[11]/PIO0_15_GPIO_ARD', identifier: SW}
 - {pin_num: '31', pin_signal: PIO1_5/FC0_RXD_SDA_MOSI_DATA/SD0_D2/CTIMER2_MAT0/SCT_GPI0, label: 'P17[17]/P24[1]/PIO1_5_GPIO_ARD', identifier: TIRQ;kPINT_PinInt0}
 - {pin_num: '24', pin_signal: PIO1_8/FC0_CTS_SDA_SSEL0/SD0_CLK/SCT0_OUT1/FC4_SSEL2/ADC0_4, label: 'P17[19]/PIO1_8_GPIO_ARD', identifier: TRST}
 - {pin_num: '10', pin_signal: PIO1_9/FC1_SCK/CT_INP4/SCT0_OUT2/FC4_CTS_SDA_SSEL0/ADC0_12, label: 'S3/P18[1]/PIO1_9_GPIO_ARD', identifier: S3;SIA}
 - {pin_num: '40', pin_signal: PIO1_10/FC1_RXD_SDA_MOSI_DATA/CTIMER1_MAT0/SCT0_OUT3, label: 'P18[3]/PIO1_10_GPIO_ARD', identifier: SIB}
 - {pin_num: '93', pin_signal: PIO1_11/FC1_TXD_SCL_MISO_WS/CT_INP5/USB0_VBUS, label: 'P17[6]/PIO1_11_GPIO_ARD', identifier: TLPn}
+- {pin_num: '41', pin_signal: PIO1_22/SD0_CMD/CTIMER2_MAT3/SCT_GPI5/FC4_SSEL3/PLU_OUT4, label: 'P20[4]/PLU_OUT4/GPIO', identifier: SIA;SIW}
 - {pin_num: '73', pin_signal: PIO1_28/FC7_SCK/SD0_D5/CT_INP2/PLU_IN3, label: 'P17[18]/P20[2]/PLU_IN3/GPIO', identifier: LCD_RST}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */

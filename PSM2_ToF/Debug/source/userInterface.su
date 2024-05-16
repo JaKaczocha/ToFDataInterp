@@ -1,0 +1,5 @@
+../source/userInterface.c:15:6:interfaceActivity	32	static
+../source/userInterface.c:58:6:updateMaxValue	40	static
+../source/userInterface.c:109:6:updateMinValue	40	static
+../source/userInterface.c:160:6:updateColorMode	40	static
+../source/userInterface.c:190:6:displaySettings	48	static

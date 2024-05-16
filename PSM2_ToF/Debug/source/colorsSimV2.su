@@ -1,0 +1,2 @@
+../source/colorsSimV2.c:7:10:convertToColorRGB	32	static
+../source/colorsSimV2.c:37:6:rgb565_to_rgb	24	static

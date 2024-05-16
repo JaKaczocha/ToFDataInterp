@@ -1,5 +1,54 @@
 #include "interpolation.h"
 
+
+#define CLAMP(x, low, high) ((x) > (high) ? (high) : ((x) < (low) ? (low) : (x)))
+
+float CubicHermite(float A, float B, float C, float D, float t) {
+    float a = -A * 0.5f + (3.0f * B) * 0.5f - (3.0f * C) * 0.5f + D * 0.5f;
+    float b = A - (5.0f * B) * 0.5f + 2.0f * C - D * 0.5f;
+    float c = -A * 0.5f + C * 0.5f;
+    float d = B;
+
+    return a * t * t * t + b * t * t + c * t + d;
+}
+
+float bicubicInterpolate(float p[4][4], float x, float y) {
+    float arr[4];
+    arr[0] = CubicHermite(p[0][0], p[0][1], p[0][2], p[0][3], y);
+    arr[1] = CubicHermite(p[1][0], p[1][1], p[1][2], p[1][3], y);
+    arr[2] = CubicHermite(p[2][0], p[2][1], p[2][2], p[2][3], y);
+    arr[3] = CubicHermite(p[3][0], p[3][1], p[3][2], p[3][3], y);
+    return CubicHermite(arr[0], arr[1], arr[2], arr[3], x);
+}
+
+void bicubic(uint16_t dest[], const uint16_t destWidth, const uint16_t destHeight, const uint16_t src[], const uint16_t srcWidth, const uint16_t srcHeight) {
+    for (int i = 0; i < destHeight; i++) {
+        for (int j = 0; j < destWidth; j++) {
+            float x = (float)j / (float)destWidth * (float)srcWidth;
+            float y = (float)i / (float)destHeight * (float)srcHeight;
+
+            int xInt = (int)x;
+            int yInt = (int)y;
+
+            float p[4][4];
+            for (int m = -1; m <= 2; m++) {
+                for (int n = -1; n <= 2; n++) {
+                    int xIndex = xInt + m;
+                    int yIndex = yInt + n;
+                    xIndex = xIndex < 0 ? 0 : xIndex >= srcWidth ? srcWidth - 1 : xIndex;
+                    yIndex = yIndex < 0 ? 0 : yIndex >= srcHeight ? srcHeight - 1 : yIndex;
+                    p[m + 1][n + 1] = src[yIndex * srcWidth + xIndex];
+                }
+            }
+
+            float interpolatedValue = bicubicInterpolate(p, x - xInt, y - yInt);
+            interpolatedValue = CLAMP(interpolatedValue, 1.0f, 4000.0f); // Zapewnienie, że wartość mieści się w zakresie uint16_t
+            dest[i * destWidth + j] = (uint16_t)interpolatedValue;
+        }
+    }
+}
+
+
 int nearestNeighbor(uint16_t dest[], uint16_t destWidth, uint16_t destHeight, const uint16_t src[], const uint16_t srcWidth, const uint16_t srcHeight)
 {
 

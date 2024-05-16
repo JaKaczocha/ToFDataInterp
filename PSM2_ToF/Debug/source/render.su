@@ -1,4 +1,6 @@
-../source/render.c:11:15:drawGreyBilinear	48	static
-../source/render.c:27:15:drawGreyNearest	48	static
-../source/render.c:40:15:drawColorBilinear	48	static
-../source/render.c:56:15:drawColorNearest	48	static
+../source/render.c:13:15:drawGreyBicubic	72	dynamic
+../source/render.c:32:15:drawGreyBilinear	72	dynamic
+../source/render.c:51:15:drawGreyNearest	72	dynamic
+../source/render.c:67:15:drawColorBicubic	72	dynamic
+../source/render.c:86:15:drawColorBilinear	72	dynamic
+../source/render.c:105:15:drawColorNearest	72	dynamic

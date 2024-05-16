@@ -2,9 +2,9 @@ C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\CMSIS/core_cm33.h:2575:22:__NVIC_Se
 C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\CMSIS/core_cm33.h:3128:26:SysTick_Config	16	static
 C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\drivers/fsl_gpio.h:153:20:GPIO_PinWrite	24	static
 C:\Users\User\Desktop\toffik\ToF_3D\PSM2_ToF\drivers/fsl_gpio.h:172:24:GPIO_PinRead	24	static
-../source/PSM2_ToF.c:45:6:SysTick_Handler	4	static
-../source/PSM2_ToF.c:50:6:delay_ms	24	static
-../source/PSM2_ToF.c:55:6:cbToF_Ready	24	static
-../source/PSM2_ToF.c:72:6:detectedENCA	16	static
+../source/PSM2_ToF.c:52:6:SysTick_Handler	4	static
+../source/PSM2_ToF.c:57:6:delay_ms	24	static
+../source/PSM2_ToF.c:62:6:cbToF_Ready	24	static
+../source/PSM2_ToF.c:79:6:detectedENCA	16	static
 ../source/PSM2_ToF.c:92:6:detectedSW	16	static
-../source/PSM2_ToF.c:100:5:main	48	static
+../source/PSM2_ToF.c:101:5:main	64	static

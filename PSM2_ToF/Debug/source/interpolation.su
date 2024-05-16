@@ -1,2 +1,5 @@
-../source/interpolation.c:3:5:nearestNeighbor	48	static
-../source/interpolation.c:28:6:bilinear	80	static
+../source/interpolation.c:6:7:CubicHermite	48	static
+../source/interpolation.c:15:7:bicubicInterpolate	40	static
+../source/interpolation.c:24:6:bicubic	136	static
+../source/interpolation.c:52:5:nearestNeighbor	48	static
+../source/interpolation.c:77:6:bilinear	80	static
