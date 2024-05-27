@@ -47,8 +47,8 @@ Additionally, user can adjust values using build-in menu:
 
 Values that can be modified:
 * **Data read mode** - how sensor data will be transformed before its
-* **Minimal sensor data read** [ m ] - value from 1 - 4000 meters
-* **Maximal sensor data read** [ m ] - value from 1 - 4000 meters
+* **Minimal sensor data read** [ mm ] - value from 1 - 4000 millimetres
+* **Maximal sensor data read** [ mm ] - value from 1 - 4000 millimetres
 * **Frequency refresh update** [ Hz ] - how fast sensor will refresh data from 1 - 60 Hz
 * **Sharpness** [ % ] - " [The sharpener is used to remove some or all of the signal caused by a veiling glare](https://www.st.com/resource/en/user_manual/um2884-a-guide-to-using-the-vl53l5cx-multizone-timeofflight-ranging-sensor-with-a-wide-field-of-view-ultra-lite-driver-uld-stmicroelectronics.pdf#page=10) ", value from 0 - 99%
 
