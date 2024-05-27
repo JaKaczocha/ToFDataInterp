@@ -1,4 +1,4 @@
-# ToF_3D
+# Time of Flight Data Interpolation
 Student project that leverages the VL53L5CX Time of Flight (ToF) sensor in conjunction with the LPC55S69 microcontroller. The project is designed to explore the capabilities of the ToF sensor and demonstrate its potential in real-world applications.
 
 ## How To Use
